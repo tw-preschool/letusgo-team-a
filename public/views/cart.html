@@ -10,6 +10,9 @@
 body{
   margin-top:70px;
 }
+th{
+  width: 20%;
+}
 </style>
 </head>
 
@@ -44,42 +47,59 @@ body{
   </div>
 </nav>
 
-
-<div>
-  <h4>购物清单</h4>
-  <table>
-    <thead>
-    <tr>
-      <th>名称</th>
-      <th>单价(元)</th>
-      <th>单位</th>
-      <th>数量</th>
-      <th>小计</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>可口可乐</td>
-      <td>3</td>
-      <td>瓶</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>雪碧</td>
-      <td>3</td>
-      <td>瓶</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
-    </tbody>
-  </table>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h4>购物清单</h4></div>
+    <div id="pay-date"></div>
+    <table class="table table-bordered table-hover table-responsive">
+      <thead>
+        <tr>
+          <th>名称</th>
+          <th>单价(元)</th>
+          <th>单位</th>
+          <th>数量</th>
+          <th>小计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>可口可乐</td>
+          <td>3</td>
+          <td>瓶</td>
+          <td>
+            <div class="btn-group">
+              <a href="#" class="btn btn-default">-</a>
+              <a href="#" class="btn btn-default">1</a>
+              <a href="#" class="btn btn-default">+</a>
+            </div>
+          </td>
+          <td>3.00<span>元</span></td>
+        </tr>
+        <tr>
+          <td>雪碧</td>
+          <td>3</td>
+          <td>瓶</td>
+          <td>
+            <div class="btn-group">
+              <a href="#" class="btn btn-default">-</a>
+              <a href="#" class="btn btn-default">1</a>
+              <a href="#" class="btn btn-default">+</a>
+            </div>
+          </td>
+          <td>3.00<span>元</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+      <td colspan="5">
+          <ul class="list-unstyled">
+            <li class="text-right"><p>总计：<span>6.00元</span></p></li>
+            <li class="text-right"><a href="./payment.html" class="btn btn-primary">付款</a></li>
+          </ul>
+        </td>
+      </tfoot>
+  </div>
 </div>
 
-<div>
-  <p>总计：<span>6.00元</span></p>
-  <a href="./payment.html">付款</a>
-</div>
 
 <script type="text/javascript" src="../lib/jquery-2.1.1/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
