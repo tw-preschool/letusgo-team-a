@@ -47,23 +47,40 @@ body{
   </div>
 </nav>
 
-name: <input type='text' id='productName'> <br>
-price: <input type='text' id='productPrice'> <br>
-unit: <input type='text' id='productUnit'> <br><br>
-<button id='addProduct'>add product</button>
 
-<div>
-  <h3>商品列表</h3>
-  <table id="item-table">
-    <thead>
-    <tr>
-      <th>名称</th>
-      <th>单价(元)</th>
-      <th>单位</th>
-      <th></th>
-    </tr>
-    </thead>
-  </table>
-</div>
+<div class="container">
+    <div class="form-group">
+      <label >名称</label>
+      <input  class="form-control" id="productName">
+    </div>
+    <div class="form-group">
+      <label >单价(元)</label>
+      <input class="form-control" id="productPrice">
+    </div>
+    <div class="form-group">
+      <label >单位</label>
+      <input  class="form-control" id="productUnit">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default" id='addProduct'>添加商品</button>
+    </div>
+ </div> 
+
+
+<div class="container">
+  <div class="panel panel-success">
+    <div class="panel-heading text-center"><h4>商品列表</h4></div>
+      <table id="item-table" class="table table-bordered">
+        <thead>
+          <tr>
+            <th width='30%'>名称</th>
+            <th width='40%'>单价(元)</th>
+            <th width='40%'>单位</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+
 </body>
 </html>
