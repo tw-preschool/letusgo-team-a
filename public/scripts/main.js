@@ -1,4 +1,4 @@
-$(document).ready(function () {
+/*$(document).ready(function () {
     var feature = (function () {
         var initItems = function () {
             var items = loadAllItems();
@@ -27,5 +27,5 @@ $(document).ready(function () {
 
     feature.init();
     feature.printDate();
-});
+});*/
 
