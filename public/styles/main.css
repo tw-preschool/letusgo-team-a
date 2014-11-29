@@ -1,0 +1,12 @@
+body{
+  margin-top:70px;
+}
+.form-inline .input-group > .form-control{
+  width: 43px;
+}
+.table-width-cart th{
+  width: 20%;
+}
+.table-width-items th{
+  width: 25%;
+}
