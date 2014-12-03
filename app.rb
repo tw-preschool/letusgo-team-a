@@ -1,3 +1,5 @@
+# encoding: UTF-8
+require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/contrib'
 require 'sinatra/reloader'
@@ -9,8 +11,10 @@ require './models/product'
 require './models/user'
 
 class POSApplication < Sinatra::Base
-    helpers Sinatra::ContentFor
-    use Rack::Session::Pool, :expire_after => 60 * 60 * 24 * 30
+    configure do
+        helpers Sinatra::ContentFor
+        use Rack::Session::Pool, :expire_after => 60 * 60 * 24 * 30
+    end
 
     dbconfig = YAML.load(File.open("config/database.yml").read)
 
@@ -85,21 +89,30 @@ class POSApplication < Sinatra::Base
     end
 
     get '/login' do
+        @error_text = nil
         content_type :html
         erb :login
     end
 
     post '/login' do
+        @error_text = nil
         username = params[:username]
         password = params[:password]
-        redirect to('/login'), 303 if username.nil? || username.empty? || password.nil? || password.empty?
+        if username.nil? || username.empty? || password.nil? || password.empty?
+          content_type :html
+          @error_text = "用户名和密码不能为空!"
+          erb :login
+        end
         user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
         if user
             session[:username] = username
             session[:password] = password
             redirect to('/admin')
         else
-            redirect to('/login'), 303
+            content_type :html
+            @error_text = "用户名或密码错误!"
+            puts @error_text
+            erb :login
         end
     end
 
