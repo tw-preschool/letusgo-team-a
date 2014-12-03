@@ -72,13 +72,9 @@ class POSApplication < Sinatra::Base
     end
 
     get '/admin' do
-        user = User.create(:username => 'admin', :password => 'admin', :is_admin => true)
         username = session[:username]
         password = session[:password]
-        puts "admin: x"
         redirect to('/login'), 303 if username.nil? || username.empty? || password.nil? || password.empty?
-        puts "admin: " +  username + "  " + password + "  " + user.to_s
-
         user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
         if user
           content_type :html
@@ -98,11 +94,9 @@ class POSApplication < Sinatra::Base
         password = params[:password]
         redirect to('/login'), 303 if username.nil? || username.empty? || password.nil? || password.empty?
         user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
-        puts "login: " +  username + "  " + password + "  " + user.to_s
         if user
             session[:username] = username
             session[:password] = password
-            puts "session  " + session[:username]
             redirect to('/admin')
         else
             redirect to('/login'), 303
