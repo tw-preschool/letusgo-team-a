@@ -50,7 +50,9 @@
           <td><%= item.name %></td>
           <td><%= item.price %></td>
           <td><%= item.unit %></td>
-          <td></td>
+          <td>
+          <a href="/edit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil"></span>编辑</a>
+          <a href="/delete" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a></td>
         </tr>
         <% end %>
       </tbody>
