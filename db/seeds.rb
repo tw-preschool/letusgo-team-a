@@ -6,7 +6,7 @@ require 'json'
 Product.delete_all
 
 items = []
-items.push :name => '可口可乐', :unit => '瓶', :price => 3.00
+items.push :name => '可口可乐', :unit => '瓶', :price => 3.00 
 items.push :name => '雪碧', :unit => '瓶', :price => 3.00
 items.push :name => '苹果', :unit => '斤', :price => 5.50
 items.push :name => '荔枝', :unit => '斤', :price => 15.00
