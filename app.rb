@@ -94,6 +94,11 @@ class POSApplication < Sinatra::Base
         erb :login
     end
 
+    get '/edit' do
+        content_type :html
+        erb :edit    
+    end
+        
     post '/login' do
         @error_text = nil
         username = params[:username]
