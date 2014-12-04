@@ -32,4 +32,31 @@
 <% end %>
 
 <!-- 页面主体 -->
-Hello Admin!
+<div class="container">
+  <div class="panel panel-success">
+    <div class="panel-heading text-center"><h4>商品列表</h4></div>
+    <table id="item-table" class="table table-bordered table-width-items">
+      <thead>
+        <tr>
+          <th>名称</th>
+          <th>单价(元)</th>
+          <th>单位</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% Product.all.each do |item| %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.price %></td>
+          <td><%= item.unit %></td>
+          <td></td>
+        </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+  </div>
+</div>
+</div>
