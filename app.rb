@@ -112,12 +112,23 @@ class POSApplication < Sinatra::Base
         if user
             session[:username] = username
             session[:password] = password
+
             redirect to('/admin')
         else
             content_type :html
             @error_text = "用户名或密码错误!"
             puts @error_text
             erb :login
+        end
+    end
+
+    put '/products' do
+	    product = Product.find(params[:id])
+	    product.promotion = params[:promotion]
+        if product.save
+            [201, {:message => "update success!"}.to_json]
+        else
+            halt 500, {:message => "update failed!"}.to_json
         end
     end
 

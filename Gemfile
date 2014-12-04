@@ -1,5 +1,5 @@
 source 'http://ruby.taobao.org'
-
+gem "sinatra-activerecord"
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'sqlite3'
