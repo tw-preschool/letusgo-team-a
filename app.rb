@@ -2,6 +2,7 @@ require 'sinatra'
 require 'rack/contrib'
 require 'active_record'
 require 'json'
+require 'erb'
 
 require './models/product'
 
@@ -51,6 +52,11 @@ class POSApplication < Sinatra::Base
         rescue  ActiveRecord::RecordNotFound => e
             [404, {:message => e.message}.to_json]
         end
+    end
+
+    get '/login' do
+        content_type 'html'
+        erb :login
     end
 
     post '/products' do
