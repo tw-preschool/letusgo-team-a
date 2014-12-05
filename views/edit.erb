@@ -31,4 +31,22 @@
 </div>
 <% end %>
 
-<!-- 主体部分  -->
+<!-- 主体部分 -->
+<form action="/edit/<%= @product.id %>" method="post" role="form">
+  <h2>请修改产品信息</h2>
+  <div class="form-group">
+    <label>商品名称</label>
+    <input  class="form-control" name="productName" value="<%= @product.name %>">
+  </div>
+  <div class="form-group">
+    <label>价格(元)</label>
+    <input type="number" class="form-control" name="productPrice" value="<%= @product.price %>" >
+  </div>
+  <div class="form-group">
+    <label>单位</label>
+    <input class="form-control" name="productUnits" value="<%= @product.unit %>">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+

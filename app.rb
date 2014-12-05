@@ -64,15 +64,18 @@ class POSApplication < Sinatra::Base
     end
 
     post '/products' do
-        product = Product.create(:name => params[:name],
-                            :price => params[:price],
-                            :unit => params[:unit])
+        product = Product.create(:name => params[:productName],
+                            :price => params[:productPrice],
+                            :unit => params[:productUnit])
+        puts "#{params[:productName]}"
 
-        if product.save
-            [201, {:message => "products/#{product.id}"}.to_json]
-        else
-            halt 500, {:message => "create product failed"}.to_json
-        end
+        # if product.save
+        #     [201, {:message => "products/#{product.id}"}.to_json]
+        # else
+        #     halt 500, {:message => "create product failed"}.to_json
+        # end
+        product.save
+        redirect to('/admin'), 303
     end
 
     get '/admin' do
@@ -94,11 +97,30 @@ class POSApplication < Sinatra::Base
         erb :login
     end
 
-    get '/edit' do
+    get '/edit/:id' do
+        @product = Product.find(params[:id])    
         content_type :html
         erb :edit    
     end
-        
+    
+    post '/edit/:id' do
+        product = Product.find(params[:id])
+        product.attributes ={
+            :name => params[:productName],
+            :price => params[:productPrice],
+            :unit => params[:productUnits],
+        }
+        product.save
+        puts "#{product.unit}"
+        redirect to('/admin'), 303
+    end
+
+    get '/delete/:id' do
+        product = Product.find(params[:id])
+        product.destroy
+        redirect to('/admin'), 303
+    end
+
     post '/login' do
         @error_text = nil
         username = params[:username]
