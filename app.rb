@@ -102,6 +102,7 @@ class POSApplication < Sinatra::Base
     post '/login' do
         username = params[:username]
         password = params[:password]
+        puts username + "-" + password
         if username.nil? || username.empty? || password.nil? || password.empty?
           content_type :html
           erb :login, locals:{error_text: "用户名和密码不能为空!"}

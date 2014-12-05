@@ -1,6 +1,13 @@
 <% content_for :style_chunk do%>
   <link rel="stylesheet" href="../styles/main.css"/>
   <link rel="stylesheet" href="../styles/login.css"/>
+  <script type="text/javascript">
+    function login()
+    {
+      document.getElementById("form_hidden_pass").value = hex_sha1(document.getElementById("form_pass").value);
+      return true;
+    }
+  </script>
 <% end %>
 <% content_for :nav_lis do%>
 <div class="navbar-header">
@@ -33,12 +40,13 @@
 <% end %>
 
 <!-- 页面主体 -->
-  <form class="form-signin" id="form_login" action="/login" method="post">
-    <h2 class="form-signin-heading">Please sign in</h2>
+  <form class="form-signin" id="form_login" action="/login" method="post" onsubmit="login();">
+    <h3 class="form-signin-heading">请登入...</h3>
     <% if(error_text rescue nil) %>
       <p class="form-error-text"><%= "#{error_text} 请重新输入!"%></p>
     <% end %>
-    <input class="form-control" type="text" name="username" placeholder="Account"autofocus required>
-    <input class="form-control" type="password" name="password" placeholder="Password" required>
-    <input class="login-form-btn btn btn-lg btn-primary btn-block" type="submit" value="submit">
+    <input class="form-control" type="text" name="username" placeholder="请输入用户名..."autofocus required>
+    <input id="form_hidden_pass" type="hidden" name="password" value="" />
+    <input id="form_pass" class="form-control" type="password" placeholder="请输入密码..." required>
+    <input class="login-form-btn btn btn-lg btn-primary btn-block" type="submit" value="登入">
   </form>
