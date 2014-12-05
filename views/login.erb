@@ -33,7 +33,7 @@
 <% end %>
 
 <!-- 页面主体 -->
-  <form class="form-signin" id="form_login" action="\login" method="post">
+  <form class="form-signin" id="form_login" action="/login" method="post">
     <h2 class="form-signin-heading">Please sign in</h2>
     <% if !@error_text.nil? %>
       <p class="form-error-text"><%= "#{@error_text} 请重新输入!"%></p>
