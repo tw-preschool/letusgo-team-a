@@ -82,7 +82,7 @@ class POSApplication < Sinatra::Base
         username = session[:username]
         password = session[:password]
         redirect to('/login'), 303 if username.nil? || username.empty? || password.nil? || password.empty?
-        user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
+        user = User.where("username = ? AND password = ?", username, password).first #rescue nil
         if user
           content_type :html
           erb :admin
@@ -100,7 +100,7 @@ class POSApplication < Sinatra::Base
     get '/edit/:id' do
         @product = Product.find(params[:id])    
         content_type :html
-        erb :edit    
+        erb :edit
     end
     
     post '/edit/:id' do
@@ -121,25 +121,32 @@ class POSApplication < Sinatra::Base
         redirect to('/admin'), 303
     end
 
+
     post '/login' do
-        @error_text = nil
         username = params[:username]
         password = params[:password]
         if username.nil? || username.empty? || password.nil? || password.empty?
           content_type :html
-          @error_text = "用户名和密码不能为空!"
-          erb :login
+          erb :login, locals:{error_text: "用户名和密码不能为空!"}
         end
-        user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
+        user = User.where("username = ? AND password = ?", username, password).first #rescue nil
         if user
             session[:username] = username
             session[:password] = password
             redirect to('/admin')
         else
             content_type :html
-            @error_text = "用户名或密码错误!"
-            puts @error_text
-            erb :login
+            erb :login, locals:{error_text:"用户名或密码错误!"}
+        end
+    end
+
+    put '/products' do
+	    product = Product.find(params[:id])
+	    product.promotion = params[:promotion]
+        if product.save
+            [201, {:message => "update success!"}.to_json]
+        else
+            halt 500, {:message => "update failed!"}.to_json
         end
     end
 
