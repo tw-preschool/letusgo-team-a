@@ -5,6 +5,7 @@ require 'json'
 require 'erb'
 
 require './models/product'
+require './models/user'
 
 class POSApplication < Sinatra::Base
     dbconfig = YAML.load(File.open("config/database.yml").read)
@@ -12,6 +13,10 @@ class POSApplication < Sinatra::Base
     configure :development do
         require 'sqlite3'
         ActiveRecord::Base.establish_connection(dbconfig['development'])
+
+        use Rack::Session::Cookie, :key => 'rack.session',
+                           :expire_after => 10,
+                           :secret => 'login_secret'
     end
 
     configure :test do
@@ -28,11 +33,6 @@ class POSApplication < Sinatra::Base
     get '/' do
         content_type :html
         File.open('public/index.html').read
-    end
-
-    get '/add' do
-        content_type :html
-        File.open('public/add.html').read
     end
 
     get '/products' do
@@ -56,7 +56,29 @@ class POSApplication < Sinatra::Base
 
     get '/login' do
         content_type 'html'
-        erb :login
+        erb :login, :locals => {:message => ''}
+    end
+
+    get '/admin' do
+        content_type 'html'
+ 
+        if session[:login_state]
+            erb :add
+        else
+            redirect to ('/login')
+        end    
+    end    
+
+    post '/login' do
+        content_type 'html'
+
+        if params[:username] == 'admin' and params[:password] == 'admin'
+            session[:login_state] = 'login'
+
+            erb :add
+        else
+            erb :login, :locals => {:message => 'Invalid User Name or Password!'}
+        end
     end
 
     post '/products' do
