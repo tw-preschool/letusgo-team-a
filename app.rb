@@ -96,17 +96,15 @@ class POSApplication < Sinatra::Base
 
     get '/edit' do
         content_type :html
-        erb :edit    
+        erb :edit
     end
-        
+
     post '/login' do
-        @error_text = nil
         username = params[:username]
         password = params[:password]
         if username.nil? || username.empty? || password.nil? || password.empty?
           content_type :html
-          @error_text = "用户名和密码不能为空!"
-          erb :login
+          erb :login, locals:{error_text: "用户名和密码不能为空!"}
         end
         user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
         if user
@@ -116,9 +114,7 @@ class POSApplication < Sinatra::Base
             redirect to('/admin')
         else
             content_type :html
-            @error_text = "用户名或密码错误!"
-            puts @error_text
-            erb :login
+            erb :login, locals:{error_text:"用户名或密码错误!"}
         end
     end
 
