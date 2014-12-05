@@ -121,6 +121,15 @@ class POSApplication < Sinatra::Base
         redirect to('/admin'), 303
     end
 
+    put '/products' do
+	    product = Product.find(params[:id])
+	    product.promotion = params[:promotion]
+        if product.save
+            [201, {:message => "update success!"}.to_json]
+        else
+            halt 500, {:message => "update failed!"}.to_json
+        end
+    end
 
     post '/login' do
         username = params[:username]
@@ -138,16 +147,6 @@ class POSApplication < Sinatra::Base
         else
             content_type :html
             erb :login, locals:{error_text:"用户名或密码错误!"}
-        end
-    end
-
-    put '/products' do
-	    product = Product.find(params[:id])
-	    product.promotion = params[:promotion]
-        if product.save
-            [201, {:message => "update success!"}.to_json]
-        else
-            halt 500, {:message => "update failed!"}.to_json
         end
     end
 

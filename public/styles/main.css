@@ -8,5 +8,8 @@ body{
   width: 16.5%;
 }
 .table-width-items th{
-  width: 20%;
+  width: 25%;
+}
+.prom {
+display: inline;
 }

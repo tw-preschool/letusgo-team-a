@@ -52,9 +52,11 @@
           <td><%= item.unit %></td>
           <td>
           <a href="/edit/<%= item.id %>" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil"></span>编辑</a>
-          <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a></td>
+          <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a>
+	  <a href="#" id = "inline-promotion<%= item.id %>"></a>
+	  </td>
         </tr>
-        <% end %>
+	<% end %>
         <tr>
           <td>
             <a href="/add" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-plus"></span>添加商品</a>

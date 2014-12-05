@@ -2,8 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../lib/bootstrap-3.2.0-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../lib/bootstrap-3.2.0-dist/css/bootstrap-theme.css">
+  <link rel="stylesheet" href="../lib/bootstrap-3.2.0-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="../lib/bootstrap-3.2.0-dist/css/bootstrap-theme.css">
+  <link rel="stylesheet" href="../lib/bootstrap-3.2.0-dist/switch/bootstrap-switch.css">
     <%= yield_content :style_chunk %>
   </head>
 
@@ -18,14 +19,18 @@
     <div class="container">
       <%= yield %>
     </div>
-
     <script type="text/javascript" src="../lib/jquery-2.1.1/jquery-2.1.1.js"></script>
     <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/switch/bootstrap-switch.js"></script>
     <script type="text/javascript" src="../lib/lodash-2.4.1/lodash.compat.js"></script>
     <script type="text/javascript" src="../lib/sha1.js"></script>
     <script type="text/javascript" src="../scripts/model/item.js"></script>
     <script type="text/javascript" src="../scripts/model/promotion.js"></script>
     <script type="text/javascript" src="../scripts/utils.js"></script>
+    <script type="text/javascript" src="../scripts/ajax.js"></script>
+    <script>
+    $("[name='my-checkbox']").bootstrapSwitch();
+    </script>
 
   </body>
 </html>
