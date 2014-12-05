@@ -79,7 +79,7 @@ class POSApplication < Sinatra::Base
         username = session[:username]
         password = session[:password]
         redirect to('/login'), 303 if username.nil? || username.empty? || password.nil? || password.empty?
-        user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
+        user = User.where("username = ? AND password = ?", username, password).first #rescue nil
         if user
           content_type :html
           erb :admin
@@ -106,11 +106,10 @@ class POSApplication < Sinatra::Base
           content_type :html
           erb :login, locals:{error_text: "用户名和密码不能为空!"}
         end
-        user = User.find(:first, :conditions => ["username = ? and password = ?", username, password])
+        user = User.where("username = ? AND password = ?", username, password).first #rescue nil
         if user
             session[:username] = username
             session[:password] = password
-
             redirect to('/admin')
         else
             content_type :html
