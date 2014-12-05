@@ -100,7 +100,6 @@ class POSApplication < Sinatra::Base
     end
 
     post '/login' do
-        @error_text = nil
         username = params[:username]
         password = params[:password]
         if username.nil? || username.empty? || password.nil? || password.empty?
@@ -115,7 +114,6 @@ class POSApplication < Sinatra::Base
             redirect to('/admin')
         else
             content_type :html
-            puts @error_text
             erb :login, locals:{error_text:"用户名或密码错误!"}
         end
     end
