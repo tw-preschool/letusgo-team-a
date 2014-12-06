@@ -1,3 +1,6 @@
+# require 'rake'
+# require 'rspec/core/rake_task'
+require 'active_support/core_ext'
 require 'active_record'
 require 'logger'
 require 'yaml'
@@ -5,6 +8,31 @@ require 'yaml'
 desc "Migrate the database through scripts in db/."
 task :migrate => :environment do
     ActiveRecord::Migrator.migrate('db/', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+end
+
+desc "Create an empty migration in db/migrate, e.g., rake generate:migration NAME=create_tasks"
+task :migration do
+  unless ENV.has_key?('NAME')
+    raise "Must specificy migration name, e.g., rake generate:migration NAME=create_tasks"
+  end
+
+  name     = ENV['NAME'].camelize
+  filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), ENV['NAME'].underscore]
+  path     = File.join('db', filename)
+
+  if File.exist?(path)
+    raise "ERROR: File '#{path}' already exists"
+  end
+
+  puts "Creating #{path}"
+  File.open(path, 'w+') do |f|
+    f.write(<<-EOF.strip_heredoc)
+      class #{name} < ActiveRecord::Migration
+        def change
+        end
+      end
+    EOF
+  end
 end
 
 desc "Rollback the database"
