@@ -31,8 +31,8 @@ describe 'Pos Login Page', :type => :feature do
     end
 
     it 'go to admin page if authorized when an authorized visitor click admin link in homepage' do
-        page.set_rack_session username: 'admin'
-        page.set_rack_session password: Digest::SHA1.hexdigest('admin')
+        user = User.where("username = ?", "admin").first #rescue nil
+        page.set_rack_session user_id: user.id
         visit '/'
         click_on '管理'
         expect(current_url).to end_with('/admin')

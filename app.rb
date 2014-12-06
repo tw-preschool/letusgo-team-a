@@ -79,10 +79,9 @@ class POSApplication < Sinatra::Base
     end
 
     get '/admin' do
-        username = session[:username]
-        password = session[:password]
-        redirect to('/login'), 303 if username.nil? || username.empty? || password.nil? || password.empty?
-        user = User.where("username = ? AND password = ?", username, password).first #rescue nil
+        user_id = session[:user_id]
+        redirect to('/login'), 303 if user_id.nil?
+        user = User.where("id = ?", user_id).first #rescue nil
         if user
           content_type :html
           erb :admin
@@ -98,11 +97,11 @@ class POSApplication < Sinatra::Base
     end
 
     get '/edit/:id' do
-        @product = Product.find(params[:id])    
+        @product = Product.find(params[:id])
         content_type :html
         erb :edit
     end
-    
+
     post '/edit/:id' do
         product = Product.find(params[:id])
         product.attributes ={
@@ -134,15 +133,15 @@ class POSApplication < Sinatra::Base
     post '/login' do
         username = params[:username]
         password = params[:password]
-        puts username + "-" + password
         if username.nil? || username.empty? || password.nil? || password.empty?
           content_type :html
           erb :login, locals:{error_text: "用户名和密码不能为空!"}
         end
         user = User.where("username = ? AND password = ?", username, password).first #rescue nil
         if user
-            session[:username] = username
-            session[:password] = password
+            session[:user_id] = user.id
+            # session[:username] = username
+            # session[:password] = password
             redirect to('/admin')
         else
             content_type :html
