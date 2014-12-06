@@ -149,7 +149,6 @@ class POSApplication < Sinatra::Base
             erb :login, locals:{error_text:"用户名或密码错误!"}
         end
     end
-
     after do
         ActiveRecord::Base.connection.close
     end
