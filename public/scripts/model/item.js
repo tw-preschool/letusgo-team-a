@@ -1,8 +1,9 @@
-var Item = function(id, name, unit, price, count) {
-    this.id = id;
-    this.name = name;
-    this.unit = unit;
-    this.price = price || 0.00;
+var Item = function(data, count) {
+    this.id = data.id;
+    this.name = data.name;
+    this.unit = data.unit;
+    this.price = data.price || 0.00;
+    this.promotion = data.promotion || false;
     this.count = count || 1;
 }
 
@@ -10,13 +11,7 @@ Item.prototype.isPromoted = function () {
   if (this.count < 2) {
     return false;
   }
-
-  // var id = this.id;
-  // var promotions = loadPromotions().filter(function(promotion) {
-  //   return promotion.ids.contains(id);
-  // });
-
-  return promotions && promotions.length ? true : false;
+  return this.promotion;
 }
 
 Item.prototype.realPrice = function() {
@@ -27,6 +22,3 @@ Item.prototype.realCount = function() {
   return this.isPromoted() ? (Math.ceil(this.count / 2)) : this.count;
 }
 
-Array.prototype.contains = function(id) {
-  return this.indexOf(id) > -1;
-}

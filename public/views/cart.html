@@ -33,7 +33,7 @@
       </ul>
       <ul class="navbar-nav nav navbar-right">
         <li class="active">
-          <a href="cart.html" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车 (<span id="count">0</span>)</a>
+          <a href="cart.html" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车 (<span id="count"></span>)</a>
         </li>
         <li>
           <a href="/admin">管理</a>
@@ -47,7 +47,7 @@
   <div class="panel panel-warning">
     <div class="panel-heading"><h4>购物清单</h4></div>
     <div id="pay-date"></div>
-    <table class="table table-bordered table-responsive table-width-cart">
+    <table class="table table-bordered table-responsive table-width-cart" id='item_list'>
       <thead>
         <tr>
           <th>名称</th>
@@ -58,42 +58,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>可口可乐</td>
-          <td>3</td>
-          <td>瓶</td>
-          <td>
-            <form class="form-inline" role="form">
-              <div class="input-group">
-                <span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>
-                <input class="form-control" type="text" placeholder="1">
-                <span class="input-group-btn"><button class="btn btn-primary" type="button">+</button></span>
-              </div>
-            </form>
-          </td>
-          <td>3.00<span>元</span></td>
-        </tr>
-        <tr>
-          <td>雪碧</td>
-          <td>3</td>
-          <td>瓶</td>
-          <td>
-            <form class="form-inline" role="form">
-              <div class="input input-group" type="number">
-                <span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>
-                <input class="form-control" type="text" placeholder="1">
-                <span class="input-group-btn"><button class="btn btn-primary" type="button">+</button></span>
-              </div>
-            </form>
-          </td>
-          <td>3.00<span>元</span></td>
-        </tr>
       </tbody>
       <tfoot>
       <td colspan="5">
           <ul class="list-unstyled">
-            <li class="text-right"><p><span>总计：</span>6.00<span>元</span></p></li>
-            <li class="text-right"><a href="payment.html" class="btn btn-warning">付款</a></li>
+          <li class="text-right"><p><span>总计：</span><span id='totalPrice'></span><span>元</span></p></li>
+          <li class="text-right"><a href="payment.html" class="btn btn-warning">付款</a></li>
           </ul>
         </td>
       </tfoot>
