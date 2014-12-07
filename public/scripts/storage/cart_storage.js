@@ -29,5 +29,5 @@ var cartStorage = (function() {
         getAllItemCounts: function() {
         	return JSON.parse(localStorage.getItem("itemCount")) || {};
         }
-    }
+    };
 })();

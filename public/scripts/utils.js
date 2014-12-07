@@ -16,5 +16,5 @@ var utils = (function (){
 
     return {
         getDate: getDate
-    }
+    };
 })();
