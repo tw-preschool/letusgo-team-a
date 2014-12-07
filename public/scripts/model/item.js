@@ -19,5 +19,5 @@ Item.prototype.realPrice = function() {
 };
 
 Item.prototype.realCount = function() {
-  return this.isPromoted() ? (Math.ceil(this.count / 2)) : this.count;
+  return this.isPromoted() ? (this.count - Math.floor(this.count / 3)) : this.count;
 };
