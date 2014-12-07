@@ -28,6 +28,14 @@ feature 'shopping cart page' do
 
     scenario "should get correct shopping list and price when a user continully add 3瓶雪碧 in nonempty cart and visit '/cart'", js: true do
         # given
+        visit '/'
+        page.execute_script 'localStorage.count=6; localStorage.itemCount=JSON.stringify({"2":3,"3":3});'
+        visit '/views/items.html'
+        (1..3).each do page.find(:xpath, '//button[../../td[contains(.,"雪碧")]]').click end
+        visit '/views/cart.html'
+        expect(page).to have_selector(:xpath, '//td[../td[contains(.,"雪碧")]][contains(.,"12.00")]')
+        expect(page).to have_selector(:xpath, '//td[../td[contains(.,"苹果")]][contains(.,"16.50")]')
+        expect(page).to have_selector('#totalPrice', text: '28.5')
     end
 
     scenario "cart should be empty when a user close browser then back to visit '/cart'", js: true do
