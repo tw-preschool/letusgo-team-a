@@ -1,6 +1,7 @@
 $(document).ready(function () {
-	// $('#addProduct').on('click', addProduct);
 	loadProducts();
+
+	$('#count').text(cartStorage.getCount('count'));
 
 	function addProduct() {
 		$.ajax({
