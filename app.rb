@@ -67,13 +67,6 @@ class POSApplication < Sinatra::Base
         product = Product.create(:name => params[:productName],
                             :price => params[:productPrice],
                             :unit => params[:productUnit])
-        puts "#{params[:productName]}"
-
-        # if product.save
-        #     [201, {:message => "products/#{product.id}"}.to_json]
-        # else
-        #     halt 500, {:message => "create product failed"}.to_json
-        # end
         product.save
         redirect to('/admin'), 303
     end

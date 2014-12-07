@@ -20,10 +20,10 @@ feature 'shopping cart page' do
         visit '/views/items.html'
         (1..3).each do page.find(:xpath, '//button[../../td[contains(.,"雪碧")]]').click end
         (1..3).each do page.find(:xpath, '//button[../../td[contains(.,"苹果")]]').click end
-        visit '/cart'
+        visit '/views/cart.html'
         expect(page).to have_selector(:xpath, '//td[../td[contains(.,"雪碧")]][contains(.,"6.00")]')
         expect(page).to have_selector(:xpath, '//td[../td[contains(.,"苹果")]][contains(.,"16.50")]')
-        expect(page).to have_selector(:xpath, '//p[./span[contains(.,"总计：")]][contains(.,"22.50")]')
+        expect(page).to have_selector('#totalPrice', text: '22.5')
     end
 
     scenario "should get correct shopping list and price when a user continully add 3瓶雪碧 in nonempty cart and visit '/cart'", js: true do
