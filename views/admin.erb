@@ -41,6 +41,7 @@
           <th>名称</th>
           <th>单价(元)</th>
           <th>单位</th>
+          <th>库存</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -50,6 +51,7 @@
           <td><%= item.name %></td>
           <td><%= item.price %></td>
           <td><%= item.unit %></td>
+          <td><%= item.stock %></td>
           <td>
           <a href="/edit/<%= item.id %>" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil"></span>编辑</a>
           <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a>

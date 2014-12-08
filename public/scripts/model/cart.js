@@ -31,17 +31,17 @@ $(document).ready(function () {
 
 	function appendItem(data, itemCount) {
 		var item = new Item(data, itemCount);
-		var row = $('<tr><td>' + data.name + '</td><td>' + data.price + '</td><td>' + data.unit + '</td><td>' + 
+		var row = $('<tr><td>' + data.name + '</td><td>' + data.price + '</td><td>' + data.unit + '</td><td>' +
 			appendButton(itemCount) + '</td><td>' + item.realPrice() + '</td></tr>');
 
 		totalPrice += parseFloat(item.realPrice());
-        
+
 		$('#item_list').append(row);
 	}
 
 	function appendButton(itemCount) {
-		var button ='<form class="form-inline" role="form">'+
-          			'<div class="input-group">'+
+		var button ='<form class="form-inline" role="form">' +
+          			'<div class="input-group">' +
             		'<span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>' +
             		'<input class="form-control" type="text" '+'value="'+itemCount+'" placeholder="1">' +
             		'<span class="input-group-btn"><button class="btn btn-primary" type="button">+</button>' +

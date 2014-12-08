@@ -3,32 +3,6 @@ $(document).ready(function () {
 
 	$('#count').text(cartStorage.getCount('count'));
 
-	function addProduct() {
-		$.ajax({
-	        url: '/products',
-	        data: {
-	            name: $('#productName').val(),
-	            price: $('#productPrice').val(),
-	            unit: $('#productUnit').val(),
-							stock: $('#productStock').val()
-	        },
-	        success: function(data) {
-	        	appendProductByUrl(data.message);
-	        },
-	        type: 'POST'
-	    });
-	}
-
-	function appendProductByUrl(url) {
-		$.ajax({
-			url: url,
-			success: function(data){
-				appendProduct(data);
-			},
-			type: 'GET'
-		});
-	}
-
 	function loadProducts() {
 		$.ajax({
 			url: '/products',
