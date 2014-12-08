@@ -1,10 +1,10 @@
 var cartStorage = (function() {
     return {
         setCount: function(key) {
-            localStorage[key] = this.getCount(key) + 1;
+            sessionStorage[key] = this.getCount(key) + 1;
         },
         getCount: function(key) {
-            return parseInt(localStorage[key]) || 0;
+            return parseInt(sessionStorage[key]) || 0;
         },
         setItemCount: function(key) {
         	var allItemCounts = this.getAllItemCounts();
@@ -15,7 +15,7 @@ var cartStorage = (function() {
         		allItemCounts[key] = 1;
         	}
 
-        	localStorage.setItem("itemCount", JSON.stringify(allItemCounts));
+        	sessionStorage.setItem("itemCount", JSON.stringify(allItemCounts));
         },
         getItemCount: function(key) {
         	var allItemCounts = this.getAllItemCounts();
@@ -27,7 +27,7 @@ var cartStorage = (function() {
         	}
         },
         getAllItemCounts: function() {
-        	return JSON.parse(localStorage.getItem("itemCount")) || {};
+        	return JSON.parse(sessionStorage.getItem("itemCount")) || {};
         }
     };
 })();
