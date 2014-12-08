@@ -4,6 +4,7 @@ var Item = function(data, count) {
     this.unit = data.unit;
     this.price = data.price || 0.00;
     this.promotion = data.promotion || false;
+    this.stock = data.stock || 0;
     this.count = count || 1;
 };
 

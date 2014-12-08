@@ -30,7 +30,7 @@ $(document).ready(function () {
 				cartStorage.setItemCount((product.id).toString());
 			});
 		}
-        }
+    }
 
 	
 });
