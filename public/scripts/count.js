@@ -1,5 +1,6 @@
-$(document).ready(function () {
+$(document).ready(function(){
 
-  $('#count').text(localStorage.getItem('count'));
+  var count = localStorage.getItem('count') || 0;
+  $('#count').text(count);
 
 });
