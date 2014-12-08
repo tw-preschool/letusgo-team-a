@@ -5,8 +5,11 @@ body{
   width: 43px;
 }
 .table-width-cart th{
-  width: 16.5%;
+  width: 20%;
 }
 .table-width-items th{
-  width: 20%;
+  width: 18%;
+}
+.operating {
+  width: 28%;
 }
