@@ -66,7 +66,8 @@ class POSApplication < Sinatra::Base
     post '/products' do
         product = Product.create(:name => params[:productName],
                             :price => params[:productPrice],
-                            :unit => params[:productUnit])
+                            :unit => params[:productUnit],
+                            :stock => params[:productStock])
         product.save
         redirect to('/admin'), 303
     end

@@ -9,7 +9,8 @@ $(document).ready(function () {
 	        data: {
 	            name: $('#productName').val(),
 	            price: $('#productPrice').val(),
-	            unit: $('#productUnit').val()
+	            unit: $('#productUnit').val(),
+							stock: $('#productStock').val()
 	        },
 	        success: function(data) {
 	        	appendProductByUrl(data.message);
@@ -41,8 +42,10 @@ $(document).ready(function () {
 	}
 
 	function appendProduct(product) {
+		promotion = product.promotion ? '买二赠一' : '无';
 		var addButton = '<button class="btn btn-sm btn-success addCart">加入购物车</button>';
-		var row = $('<tr><td>' + product.name + '</td><td>' + product.price + '</td><td>' + product.unit + '</td><td>' + addButton + '</td></tr>');
+		var row = $('<tr><td>' + product.name + '</td><td>' + product.price + '</td><td>'
+							+ product.unit + '</td><td>' + promotion + '</td><td>' + addButton + '</td></tr>');
 
 		$('button', row).click(function() {
 			cartStorage.setCount('count');
