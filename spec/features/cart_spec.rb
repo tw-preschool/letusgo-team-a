@@ -27,7 +27,6 @@ feature 'shopping cart page' do
     end
 
     scenario "should get correct shopping list and price when a user continully add 3瓶雪碧 in nonempty cart and visit '/cart'", js: true do
-        # given
         visit '/'
         page.execute_script 'localStorage.count=6; localStorage.itemCount=JSON.stringify({"2":3,"3":3});'
         visit '/views/items.html'
@@ -39,7 +38,15 @@ feature 'shopping cart page' do
     end
 
     scenario "cart should be empty when a user close browser then back to visit '/cart'", js: true do
-        # given
+        visit '/'
+        page.execute_script 'localStorage.count=6; localStorage.itemCount=JSON.stringify({"2":3,"3":3});'
+        page.evaluate_script("window.close()")
+        page.execute_script "window.close();"
+        # restart Selenium driver
+        Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
+        visit '/views/cart.html'
+        expect(page.find(:xpath, '//tbody[..[contains(@id,"item_list")]]').text).to eq("")
+        expect(page).to have_selector('#totalPrice', text: '0')
     end
 
     scenario "sum price should change correspondingly when a user visit '/cart' and change the amount of 苹果 in nonempty cart", js: true do

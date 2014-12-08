@@ -5,6 +5,7 @@ require 'rack/test'
 require "rack_session_access"
 require "rack_session_access/capybara"
 require 'database_cleaner'
+require 'capybara'
 require 'capybara/rspec'
 
 require_relative File.join('..', 'app')
