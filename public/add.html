@@ -45,32 +45,41 @@
   </div>
 </nav>
 
-
 <div class="container">
-<form action="/products" method="post">
-    <div class="form-group">
-      <label >名称</label>
-      <input  class="form-control" name="productName">
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+    <h2>请输入产品信息</h2>
+    </div> 
+    <div class="panel-body">
+      <form action="/products" method="post">
+        <div class="form-group">
+          <label >名称</label>
+          <input  class="form-control" name="productName">
+        </div>
+        <div class="form-group">
+          <label >单价(元)</label>
+          <input class="form-control" name="productPrice">
+        </div>
+        <div class="form-group">
+          <label >单位</label>
+          <input class="form-control" name="productUnit">
+        </div>
+        <div class="form-group">
+          <label >数量</label>
+          <input class="form-control" name="productStock">
+        </div>
+        <div class="form-group">
+          <label >商品描述</label>
+          <input class="form-control" name="productProfile">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-warning" id='addProduct'>添加</button>
+          <a href="/admin" class="btn btn-default">取消</a>
+        </div>
+      </form>
     </div>
-    <div class="form-group">
-      <label >单价(元)</label>
-      <input class="form-control" name="productPrice">
-    </div>
-    <div class="form-group">
-      <label >单位</label>
-      <input class="form-control" name="productUnit">
-    </div>
-    <div class="form-group">
-      <label >数量</label>
-      <input class="form-control" name="productStock">
-    </div>
-    <div class="form-group">
-      <button type="submit" class="btn btn-default" id='addProduct'>添加</button>
-      <a href="/admin" class="btn btn-default">取消</a>
-    </div>
-    </form>
- </div>
-
+  </div>
+</div>
 
 <script type="text/javascript" src="lib/jquery-2.1.1/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="scripts/count.js"></script>
