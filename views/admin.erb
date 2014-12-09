@@ -43,6 +43,7 @@
           <th>单位</th>
           <th>库存</th>
           <th>操作</th>
+          <th>优惠</th>
         </tr>
       </thead>
       <tbody>
@@ -53,10 +54,12 @@
           <td><%= item.unit %></td>
           <td><%= item.stock %></td>
           <td class="operating">
-          <a href="/edit/<%= item.id %>" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil"></span>编辑</a>
-          <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a>
-	        <span id = "inline-promotion<%= item.id %>"></span>
-	  </td>
+          <a href="/edit/<%= item.id %>" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil">编辑</span></a>
+          <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash">删除</span></a>
+          </td>
+          <td>
+          <span id = "inline-promotion<%= item.id %>"></span>
+	        </td>
         </tr>
 	<% end %>
         <tr>
