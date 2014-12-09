@@ -17,6 +17,13 @@ var cartStorage = (function() {
 
         	sessionStorage.setItem("itemCount", JSON.stringify(allItemCounts));
         },
+        setItemWithCount: function(key, count){
+            var allItemCounts = this.getAllItemCounts();
+
+            allItemCounts[key] = count;
+
+            sessionStorage.setItem("itemCount", JSON.stringify(allItemCounts));
+        },
         getItemCount: function(key) {
         	var allItemCounts = this.getAllItemCounts();
 

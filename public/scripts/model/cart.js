@@ -3,22 +3,53 @@ $(document).ready(function () {
 
 	var allItemCounts = cartStorage.getAllItemCounts();
 
-	var totalPrice = 0;
+	var item_list = [];
 
 	for (var key in allItemCounts) {
 	  if (allItemCounts.hasOwnProperty(key)) {
 	    var url = '/products/'+ key;
-	    appendProductByUrl(url, allItemCounts[key]);
+	    getProductByUrl(url, allItemCounts[key]);
 	  }
 	}
 
+	$(".item-count-minus").click(function(e){
+		var item_form = $(e.target).parents("form").first();
+		var item_id = item_form.get(0).dataset.id;
+		var item_count = cartStorage.getItemCount(item_id);
+		var item = _.find(item_list, function(item){ return item.id == item_id});
+		if(item_count>1 && item != null) {
+			item.count = item_count-1;
+			cartStorage.setItemWithCount(item.id, item.count);
+		}
+		$("#item_"+item.id+"_count").text(item.realPrice());
+		item_form.find(".item-count").text(item.count);
+		showTotalPrice();
+	});
 
-	function appendProductByUrl(url, itemCount) {
+	$(".item-count-add").click(function(e){
+		var item_form = $(e.target).parents("form").first();
+		var item_id = item_form.get(0).dataset.id;
+		var item_count = cartStorage.getItemCount(item_id);
+		var item = _.find(item_list, function(item){ return item.id == item_id});
+		if(item != null) {
+			item.count = item_count+1;
+			cartStorage.setItemWithCount(item.id, item.count);
+		}
+		$("#item_"+item.id+"_count").text(item.realPrice());
+		item_form.find(".item-count").text(item.count);
+		showTotalPrice();
+	});
+
+
+	function getProductByUrl(url, itemCount) {
 		$.ajax({
 			url: url,
 		 	success: function(data) {
-				appendItem(data, itemCount);
+				var item = new Item(data, itemCount);
 				console.log(data);
+				appendItem(item);
+				if(item != null)
+					item_list.push(item);
 				showTotalPrice();
 			},
 			type: 'GET'
@@ -26,25 +57,53 @@ $(document).ready(function () {
 	}
 
 	function showTotalPrice(){
+		var totalPrice = 0;
+		$.each(item_list, function(index, item) {
+			totalPrice += parseFloat(item.realPrice());
+		});
 	    $('#totalPrice').text(totalPrice);
 	}
 
-	function appendItem(data, itemCount) {
-		var item = new Item(data, itemCount);
-		var row = $('<tr><td>' + data.name + '</td><td>' + data.price + '</td><td>' + data.unit + '</td><td>' +
-			appendButton(itemCount) + '</td><td>' + item.realPrice() + '</td></tr>');
+	function appendItem(item) {
+		var row = $('<tr><td>' + item.name + '</td><td>' + item.price + '</td><td>' + item.unit + '</td><td>' +
+			appendButton(item.id, item.count) + '</td><td><span id="item_'+item.id+'_count">' + item.realPrice() + '</span></td></tr>');
+		console.log("111");
+		row.find(".item-count-minus").click(function(e){
+			var item_form = $(e.target).parents("form").first();
+			var item_id = item_form.get(0).dataset.id;
+			var item_count = cartStorage.getItemCount(item_id);
+			var item = _.find(item_list, function(item){ return item.id == item_id});
+			if(item_count>1 && item != null) {
+				item.count = item_count-1;
+				cartStorage.setItemWithCount(item.id, item.count);
+			}
+			$("#item_"+item.id+"_count").text(item.realPrice());
+			item_form.find(".item-count").val(item.count);
+			showTotalPrice();
+		});
 
-		totalPrice += parseFloat(item.realPrice());
-
+		row.find(".item-count-add").click(function(e){
+			var item_form = $(e.target).parents("form").first();
+			var item_id = item_form.get(0).dataset.id;
+			var item_count = cartStorage.getItemCount(item_id);
+			var item = _.find(item_list, function(item){ return item.id == item_id});
+			if(item != null) {
+				item.count = item_count+1;
+				cartStorage.setItemWithCount(item.id, item.count);
+			}
+			$("#item_"+item.id+"_count").text(item.realPrice());
+			item_form.find(".item-count").val(item.count);
+			showTotalPrice();
+		});
 		$('#item_list').append(row);
 	}
 
-	function appendButton(itemCount) {
-		var button ='<form class="form-inline" role="form">' +
+	function appendButton(id, itemCount) {
+		var button ='<form class="form-inline" role="form" data-id="'+id+'">' +
           			'<div class="input-group">' +
-            		'<span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>' +
-            		'<input class="form-control" type="text" '+'value="'+itemCount+'" placeholder="1">' +
-            		'<span class="input-group-btn"><button class="btn btn-primary" type="button">+</button>' +
+            		'<span class="input-group-btn"><button class="btn btn-primary item-count-minus" type="button">-</button></span>' +
+            		'<input class="form-control item-count" type="text" '+'value="'+itemCount+'" placeholder="1">' +
+            		'<span class="input-group-btn"><button class="btn btn-primary item-count-add" type="button">+</button>' +
             		'</span></div></form>';
 		return button;
 	}

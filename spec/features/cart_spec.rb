@@ -54,10 +54,10 @@ feature 'shopping cart page' do
             page.execute_script 'sessionStorage.count=6; sessionStorage.itemCount=JSON.stringify({"2":3,"3":3});'
             visit '/views/cart.html'
             page.find(:xpath, '//button[contains(.,"+")][./ancestor::tr/td[contains(.,"雪碧")]]').click
-            expect(page).to have_selector(:xpath, '//input[contains(.,"4")][./ancestor::tr/td[contains(.,"雪碧")]]')
+            expect(page.find(:xpath, '//input[./ancestor::tr/td[contains(.,"雪碧")]]').value).to eq("4")
             expect(page).to have_selector('#totalPrice', text: '25.5')
             page.find(:xpath, '//button[contains(.,"-")][./ancestor::tr/td[contains(.,"雪碧")]]').click
-            expect(page).to have_selector(:xpath, '//input[contains(.,"3")][./ancestor::tr/td[contains(.,"雪碧")]]')
+            expect(page.find(:xpath, '//input[./ancestor::tr/td[contains(.,"雪碧")]]').value).to eq("3")
             expect(page).to have_selector('#totalPrice', text: '22.5')
         end
     end
