@@ -22,7 +22,7 @@ function isPromotion(event) {
 	            promotion: $(this).find("input")[0].checked
 	        },
 	        success: function(data) {
-	        	alert(data.message);
+	        	
 	        },
 	        type: 'PUT'
 	});
