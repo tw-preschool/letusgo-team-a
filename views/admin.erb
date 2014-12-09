@@ -35,13 +35,14 @@
 <div class="container">
   <div class="panel panel-success">
     <div class="panel-heading text-center"><h4>商品列表</h4></div>
-    <table id="item-table" class="table table-bordered table-width-items">
+    <table id="item-table" class="table table-bordered">
       <thead>
         <tr>
           <th>名称</th>
           <th>单价(元)</th>
           <th>单位</th>
           <th>库存</th>
+          <th>描述</th>
           <th>操作</th>
           <th>优惠</th>
         </tr>
@@ -50,14 +51,15 @@
         <% Product.all.each do |item| %>
         <tr>
           <td><%= item.name %></td>
-          <td><%= item.price %></td>
-          <td><%= item.unit %></td>
-          <td><%= item.stock %></td>
+          <td class="tableWidth"><%= item.price %></td>
+          <td class="tableWidth"><%= item.unit %></td>
+          <td class="tableWidth"><%= item.stock %></td>
+          <td><%= item.detail %></td>
           <td class="operating">
-          <a href="/edit/<%= item.id %>" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil">编辑</span></a>
-          <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash">删除</span></a>
+          <a href="/edit/<%= item.id %>" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil"></span>编辑</a>
+          <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a>
           </td>
-          <td>
+          <td class="promotion"> 
           <span id = "inline-promotion<%= item.id %>"></span>
 	        </td>
         </tr>
