@@ -5,6 +5,7 @@ var Item = function(data, count) {
     this.price = data.price || 0.00;
     this.promotion = data.promotion || false;
     this.stock = data.stock || 0;
+    this.detail = data.detail;
     this.count = count || 1;
 };
 

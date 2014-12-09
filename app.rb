@@ -102,7 +102,8 @@ class POSApplication < Sinatra::Base
             :name => params[:productName],
             :price => params[:productPrice],
             :unit => params[:productUnits],
-            :stock => params[:productStock]
+            :stock => params[:productStock],
+            :detail => params[:producDetail],
         }
         product.save
         puts "#{product.unit}"
