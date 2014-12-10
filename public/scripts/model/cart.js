@@ -12,6 +12,21 @@ $(document).ready(function () {
 	  }
 	}
 
+	$('#pay_btn').click( function() {
+		var postForm = document.createElement("form");
+        postForm.action = '/payment';
+        postForm.method = 'post';
+        postForm.enctype = 'multipart/form-data';
+        postForm.style.display = 'none';
+        var postText = document.createElement("textarea");
+        postText.name = "cart_data";
+        postText.value = window.sessionStorage.itemCount;
+        postForm.appendChild(postText);
+        document.body.appendChild(postForm);
+        postForm.submit();
+        return false;
+	});
+
 	function getProductByUrl(url, itemCount) {
 		$.ajax({
 			url: url,

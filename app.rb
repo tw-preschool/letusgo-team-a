@@ -9,6 +9,7 @@ require 'json'
 
 require './models/product'
 require './models/user'
+require './models/shopping_cart'
 
 class POSApplication < Sinatra::Base
     configure do
@@ -138,14 +139,23 @@ class POSApplication < Sinatra::Base
         user = User.where("username = ? AND password = ?", username, password).first #rescue nil
         if user
             session[:user_id] = user.id
-            # session[:username] = username
-            # session[:password] = password
             redirect to('/admin')
         else
             content_type :html
             erb :login, locals:{error_text:"用户名或密码错误!"}
         end
     end
+
+    post '/payment' do
+        cart_data = JSON.parse params[:cart_data]
+        @shopping_cart = ShoppingCart.new()
+        @shopping_cart.init_with_Data cart_data
+        @shopping_cart.update_price
+
+        content_type :html
+        erb :'/payment'
+    end
+
     after do
         ActiveRecord::Base.connection.close
     end
