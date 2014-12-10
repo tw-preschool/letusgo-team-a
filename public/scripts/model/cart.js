@@ -12,35 +12,6 @@ $(document).ready(function () {
 	  }
 	}
 
-	$(".item-count-minus").click(function(e){
-		var item_form = $(e.target).parents("form").first();
-		var item_id = item_form.get(0).dataset.id;
-		var item_count = cartStorage.getItemCount(item_id);
-		var item = _.find(item_list, function(item){ return item.id == item_id});
-		if(item_count>1 && item != null) {
-			item.count = item_count-1;
-			cartStorage.setItemWithCount(item.id, item.count);
-		}
-		$("#item_"+item.id+"_count").text(item.realPrice());
-		item_form.find(".item-count").text(item.count);
-		showTotalPrice();
-	});
-
-	$(".item-count-add").click(function(e){
-		var item_form = $(e.target).parents("form").first();
-		var item_id = item_form.get(0).dataset.id;
-		var item_count = cartStorage.getItemCount(item_id);
-		var item = _.find(item_list, function(item){ return item.id == item_id});
-		if(item != null) {
-			item.count = item_count+1;
-			cartStorage.setItemWithCount(item.id, item.count);
-		}
-		$("#item_"+item.id+"_count").text(item.realPrice());
-		item_form.find(".item-count").text(item.count);
-		showTotalPrice();
-	});
-
-
 	function getProductByUrl(url, itemCount) {
 		$.ajax({
 			url: url,
@@ -73,7 +44,9 @@ $(document).ready(function () {
 			var item_id = item_form.get(0).dataset.id;
 			var item_count = cartStorage.getItemCount(item_id);
 			var item = _.find(item_list, function(item){ return item.id == item_id});
-			if(item_count>1 && item != null) {
+			if(item_count>0 && item != null) {
+				if(item_count == 1)
+					$(e.target).attr('disabled',true);
 				item.count = item_count-1;
 				cartStorage.setItemWithCount(item.id, item.count);
 			}
@@ -88,6 +61,8 @@ $(document).ready(function () {
 			var item_count = cartStorage.getItemCount(item_id);
 			var item = _.find(item_list, function(item){ return item.id == item_id});
 			if(item != null) {
+				if(item_count == 0)
+					row.find(".item-count-minus").attr('disabled',false);
 				item.count = item_count+1;
 				cartStorage.setItemWithCount(item.id, item.count);
 			}
