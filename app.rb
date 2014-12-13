@@ -54,6 +54,20 @@ class POSApplication < Sinatra::Base
         end
     end
 
+    post '/products/query' do
+        begin
+            item_list = []
+            item_id_list = JSON.parse params["item_id_list"]
+            puts item_id_list.to_json
+            raise "query input error" unless item_id_list && item_id_list.is_a?(Array)
+            item_id_list.each do |id|
+                item_list.push Product.find(id)
+            end
+            item_list.to_json
+        rescue ActiveRecord::RecordNotFound => e
+            [404, {:message => e.message}.to_json]
+        end
+    end
 
     get '/products/:id' do
         begin
