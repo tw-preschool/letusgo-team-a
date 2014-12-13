@@ -6,7 +6,9 @@ var Item = function(data, count) {
     this.promotion = data.promotion || false;
     this.stock = data.stock || 0;
     this.detail = data.detail;
-    this.count = count || 1;
+    if(count == null)
+        count = 0;
+    this.count = Math.max(count, 0);
 };
 
 Item.prototype.isPromoted = function () {

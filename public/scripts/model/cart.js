@@ -2,6 +2,11 @@ $(document).ready(function () {
 	cart = new ShoppingCart(cartStorage);
 
 	$('#pay_btn').click( function() {
+		if(cart.getCartCount() <= 0) {
+			alert("请先选购商品吧!");
+			window.location = '/views/items.html';
+			return false;
+		}
 		var postForm = document.createElement("form");
         postForm.action = '/payment';
         postForm.method = 'post';
@@ -19,9 +24,11 @@ $(document).ready(function () {
 
 function ShoppingCart(cartStorage) {
 	var itemList = [];
-	var cartCount = cartStorage.getCount('count');
+	var cartCount = 0;
 
 	initial(cartStorage);
+
+	this.getCartCount = function() {return cartCount;};
 
 	function renderProductsByitemList() {
 		$.each(itemList, function(index, item) {
@@ -41,6 +48,10 @@ function ShoppingCart(cartStorage) {
 				if(item.count == 1) {
 					if( confirm("您真的要从购物车中移除 << " + item.name + " >> 吗？")) {
 						$(this).parents("tr").first().remove();
+						item.count -= 1;
+						cartStorage.setItemWithCount(item.id, item.count);
+						showTotalPrice();
+						updateCartCount();
 					}
 				}
 				else {
@@ -109,7 +120,7 @@ function ShoppingCart(cartStorage) {
 	}
 
 	function updateCartCount() {
-		var cartCount = 0;
+		cartCount = 0;
 		$.each(itemList, function(index, item) {
 			cartCount += item.count;
 		});
