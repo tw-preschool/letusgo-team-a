@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
   	$("[name='productStock']").on('focusout', checkProductStock);
-  	$('#addProduct').on('click', addProduct);
-  	$('#editProduct').on('click', addProduct);
+  	$('#addProduct').on('click', checkProductStock);
+  	$('#editProduct').on('click', checkProductStock);
 
   	var count = sessionStorage.getItem('count') || 0;
   	$('#count').text(count);
@@ -14,17 +14,11 @@ $(document).ready(function(){
 	function checkProductStock() {
   		if(!isProductStockValid()) {
   			$('#errorTip').text('库存必须大于等于0').show();
-    	} else {
-    		$('#errorTip').hide();
-    	}
-  	}
-
-  	function addProduct() {
-  		if(!isProductStockValid()) {
-  			$('#errorTip').text('库存必须大于等于0');
   			return false;
     	} else {
+    		$('#errorTip').hide();
     		return true;
     	}
   	}
+
 });
