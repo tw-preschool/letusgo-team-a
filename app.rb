@@ -37,12 +37,12 @@ class POSApplication < Sinatra::Base
 
     get '/' do
         content_type :html
-        File.open('public/index.html').read
+        erb :index
     end
 
     get '/add' do
         content_type :html
-        File.open('public/add.html').read
+        erb :add
     end
 
     get '/products' do
