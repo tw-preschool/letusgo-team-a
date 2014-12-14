@@ -46,7 +46,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @shopping_cart.shopping_list.each do |item| %>
+      <% @order.product_list.each do |item| %>
         <% if (item.amount > 0) %>
           <tr>
             <td>
@@ -81,7 +81,7 @@
       </tr>
     </thead>
     <tbody>
-        <% @shopping_cart.discount_list.each do |discount_item| %>
+        <% @order.discount_list.each do |discount_item| %>
           <tr>
             <td>
               买二送一
@@ -98,8 +98,8 @@
     <tfoot>
       <td colspan="3">
         <ul class="list-unstyled">
-          <li class="text-right"><p><%= "总计：#{format("%0.2f", @shopping_cart.sum_price)} 元" %></p></li>
-          <li class="text-right"><p><%= "节约：#{format("%0.2f", @shopping_cart.sum_discount)} 元" %></p></li>
+          <li class="text-right"><p><%= "总计：#{format("%0.2f", @order.sum_price)} 元" %></p></li>
+          <li class="text-right"><p><%= "节约：#{format("%0.2f", @order.sum_discount)} 元" %></p></li>
           <li class="text-right"><a href="/views/items.html" class="btn btn-success">确认</a></li>
         </ul>
       </td>
