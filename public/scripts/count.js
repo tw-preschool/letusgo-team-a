@@ -2,6 +2,7 @@ $(document).ready(function(){
 
   	$("[name='productStock']").on('focusout', checkProductStock);
   	$('#addProduct').on('click', addProduct);
+  	$('#editProduct').on('click', addProduct);
 
   	var count = sessionStorage.getItem('count') || 0;
   	$('#count').text(count);
@@ -14,7 +15,7 @@ $(document).ready(function(){
   		if(!isProductStockValid()) {
   			$('#errorTip').text('库存必须大于等于0').show();
     	} else {
-    		$('#errorTip').text('库存必须大于等于0').hide();
+    		$('#errorTip').hide();
     	}
   	}
 
