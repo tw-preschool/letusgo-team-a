@@ -9,7 +9,7 @@
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
   </button>
-  <a href="/views/items.html" class="navbar-brand">Let's Go</a>
+  <a href="/items" class="navbar-brand">Let's Go</a>
 </div>
 <div class="navbar-collapse collapse">
   <ul class="nav navbar-nav">
@@ -17,12 +17,12 @@
       <a href="/">主页</a>
     </li>
     <li>
-      <a href="/views/items.html">商品列表</a>
+      <a href="/items">商品列表</a>
     </li>
   </ul>
   <ul class="navbar-nav nav navbar-right">
     <li>
-      <a href="/views/cart.html" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车 (<span id="count">0</span>)</a>
+      <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车 (<span id="count">0</span>)</a>
     </li>
     <li>
       <a href="/admin">管理</a>
@@ -100,7 +100,7 @@
         <ul class="list-unstyled">
           <li class="text-right"><p><%= "总计：#{format("%0.2f", @order.sum_price)} 元" %></p></li>
           <li class="text-right"><p><%= "节约：#{format("%0.2f", @order.sum_discount)} 元" %></p></li>
-          <li class="text-right"><a href="/views/items.html" class="btn btn-success">确认</a></li>
+          <li class="text-right"><a href="/items" class="btn btn-success">确认</a></li>
         </ul>
       </td>
     </tfoot>

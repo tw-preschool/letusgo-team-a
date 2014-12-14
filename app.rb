@@ -106,6 +106,17 @@ class POSApplication < Sinatra::Base
         erb :login
     end
 
+    get '/items' do
+        content_type :html
+        erb :items
+    end
+
+    get '/cart' do
+        content_type :html
+        erb :cart
+    end
+
+
     get '/edit/:id' do
         @product = Product.find(params[:id])
         content_type :html
