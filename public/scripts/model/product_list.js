@@ -21,7 +21,7 @@ $(document).ready(function () {
 		if (product.stock > 0){
 		var promotionInfo = product.promotion ? '买二赠一' : '无优惠';
 		var addButton = '<button class="btn btn-sm btn-success addCart">加入购物车</button>';
-		var row = $('<tr><td>' + product.name + '</td><td>' + product.price + '</td><td>' + product.unit + '</td><td>' + product.detail + '</td><td>' + promotionInfo +'</td><td>'+addButton + '</td></tr>');
+		var row = $('<tr><td>' + product.name + '</td><td>' + product.price + '</td><td>' + product.unit + '</td><td title="'+product.detail+'" class="nowarp">' + product.detail + '</td><td>' + promotionInfo +'</td><td>'+addButton + '</td></tr>');
 
 		$('button', row).click(function() {
 			cartStorage.setCount('count');

@@ -1,5 +1,6 @@
 <% content_for :style_chunk do%>
   <link rel="stylesheet" href="../styles/main.css"/>
+  <link rel="stylesheet" href="../styles/admin.css"/>
 <% end %>
 <% content_for :nav_lis do%>
 <div class="navbar-header">
@@ -54,7 +55,7 @@
           <td class="tableWidth"><%= item.price %></td>
           <td class="tableWidth"><%= item.unit %></td>
           <td class="tableWidth"><%= item.stock %></td>
-          <td><%= item.detail %></td>
+          <td title="<%= item.detail %>" class="nowarp"><%= item.detail %></td>
           <td class="operating">
           <a href="/edit/<%= item.id %>" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-pencil"></span>编辑</a>
           <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a>
