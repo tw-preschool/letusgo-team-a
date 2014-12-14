@@ -1,6 +1,6 @@
 # encoding: utf-8
 require './models/product.rb'
-require './models/user.rb'
+require './models/administrator.rb'
 require 'json'
 require 'digest/sha1'
 
@@ -18,6 +18,6 @@ items.each do |item|
 puts Product.create(item).to_json
 end
 
-User.delete_all
+Administrator.delete_all
 
-puts User.create(:username => 'admin', :password => Digest::SHA1.hexdigest('admin'), :is_admin => true).to_json
+puts Administrator.create(:name => 'admin', :password => Digest::SHA1.hexdigest('admin')).to_json

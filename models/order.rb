@@ -2,10 +2,10 @@ require 'active_record'
 require 'json'
 require_relative './product'
 
-class ShoppingCart
-    attr_reader :shopping_list, :discount_list, :sum_price, :sum_discount
+class Order < ActiveRecord::Base
+    attr_reader :product_list, :discount_list, :sum_price, :sum_discount
     def initialize
-        @shopping_list = []
+        @product_list = []
         @discount_list = []
         @sum_price = 0.0
         @sum_discount = 0.0
@@ -21,7 +21,7 @@ class ShoppingCart
                 db_item.amount = count
                 db_item.kindred_price = 0.0
                 db_item.discount_amount = 0;
-                @shopping_list.push db_item
+                @product_list.push db_item
             else
                 raise "product id error"
             end
@@ -29,7 +29,7 @@ class ShoppingCart
     end
 
     def select_item item_name
-        select_items = @shopping_list.select {|item| item.name === item_name}
+        select_items = @product_list.select {|item| item.name === item_name}
         select_items.first
     end
 
@@ -39,21 +39,21 @@ class ShoppingCart
         if amount > 0 && !item_name.empty?
             db_item = Product.where(name: item_name).first
             if db_item
-                new_item = @shopping_list.select{|item| item.name === item_name}.first
+                new_item = @product_list.select{|item| item.name === item_name}.first
                 if new_item
                     new_item.amount += amount
                 else
                     db_item.amount = amount
                     db_item.kindred_price = 0.0
                     db_item.discount_amount = 0
-                    @shopping_list.push db_item
+                    @product_list.push db_item
                 end
             end
         end
     end
 
     def update_price
-        @shopping_list.each do |item|
+        @product_list.each do |item|
             if item.promotion
                 discount_amount = (item.amount / 3).floor
                 item.kindred_price = item.price * (item.amount - discount_amount)

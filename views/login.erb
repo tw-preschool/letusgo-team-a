@@ -9,6 +9,7 @@
     }
   </script>
 <% end %>
+
 <% content_for :nav_lis do%>
 <div class="navbar-header">
   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -45,7 +46,7 @@
     <% if(error_text rescue nil) %>
       <p class="form-error-text"><%= "#{error_text} 请重新输入!"%></p>
     <% end %>
-    <input class="form-control" type="text" name="username" placeholder="请输入用户名..."autofocus required>
+    <input class="form-control" type="text" name="adminname" placeholder="请输入用户名..."autofocus required>
     <input id="form_hidden_pass" type="hidden" name="password" value="" />
     <input id="form_pass" class="form-control" type="password" placeholder="请输入密码..." required>
     <input class="login-form-btn btn btn-lg btn-primary btn-block" type="submit" value="登入">

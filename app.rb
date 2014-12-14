@@ -8,8 +8,8 @@ require 'active_record'
 require 'json'
 
 require './models/product'
-require './models/user'
-require './models/shopping_cart'
+require './models/administrator'
+require './models/order'
 
 class POSApplication < Sinatra::Base
     configure do
@@ -58,7 +58,6 @@ class POSApplication < Sinatra::Base
         begin
             item_list = []
             item_id_list = JSON.parse params["item_id_list"]
-            puts item_id_list.to_json
             raise "query input error" unless item_id_list && item_id_list.is_a?(Array)
             item_id_list.each do |id|
                 item_list.push Product.find(id)
@@ -90,10 +89,10 @@ class POSApplication < Sinatra::Base
     end
 
     get '/admin' do
-        user_id = session[:user_id]
-        redirect to('/login'), 303 if user_id.nil?
-        user = User.where("id = ?", user_id).first #rescue nil
-        if user
+        admin_id = session[:admin_id]
+        redirect to('/login'), 303 if admin_id.nil?
+        admin = Administrator.where("id = ?", admin_id).first #rescue nil
+        if admin
           content_type :html
           erb :admin
         else
@@ -123,7 +122,6 @@ class POSApplication < Sinatra::Base
             :detail => params[:productDetail]
         }
         product.save
-        puts "#{product.unit}"
         redirect to('/admin'), 303
     end
 
@@ -144,15 +142,15 @@ class POSApplication < Sinatra::Base
     end
 
     post '/login' do
-        username = params[:username]
+        admin_name = params[:adminname]
         password = params[:password]
-        if username.nil? || username.empty? || password.nil? || password.empty?
+        if admin_name.nil? || admin_name.empty? || password.nil? || password.empty?
           content_type :html
           erb :login, locals:{error_text: "用户名和密码不能为空!"}
         end
-        user = User.where("username = ? AND password = ?", username, password).first #rescue nil
-        if user
-            session[:user_id] = user.id
+        admin = Administrator.where("name = ? AND password = ?", admin_name, password).first #rescue nil
+        if admin
+            session[:admin_id] = admin.id
             redirect to('/admin')
         else
             content_type :html
@@ -162,9 +160,9 @@ class POSApplication < Sinatra::Base
 
     post '/payment' do
         cart_data = JSON.parse params[:cart_data]
-        @shopping_cart = ShoppingCart.new()
-        @shopping_cart.init_with_data cart_data
-        @shopping_cart.update_price
+        @order = Order.new()
+        @order.init_with_data cart_data
+        @order.update_price
 
         content_type :html
         erb :'/payment'
