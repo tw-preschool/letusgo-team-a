@@ -6,4 +6,5 @@ class Product < ActiveRecord::Base
 	validates :name, :price, :unit, :stock, presence: true
 	validates :name, length: { maximum: 128 }
 	validates :price, numericality: true
+	validates :stock, :numericality => { :greater_than_or_equal_to => 0 }
 end
