@@ -40,11 +40,6 @@ class POSApplication < Sinatra::Base
         erb :index
     end
 
-    get '/add' do
-        content_type :html
-        erb :add
-    end
-
     get '/products' do
         begin
             products = Product.all || []
