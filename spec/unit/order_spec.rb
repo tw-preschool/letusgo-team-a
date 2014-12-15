@@ -21,7 +21,7 @@ describe 'Order model' do
     describe 'initalize method' do
         it 'should get an empty shopping list when initializing with empty cart data' do
             cart_data = {}
-            order = Order.new()
+            order = Order.new
             order.init_with_data cart_data
             expect(order.product_list.length).to eq(0)
         end

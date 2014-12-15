@@ -19,6 +19,7 @@
     <li>
       <a href="/items">商品列表</a>
     </li>
+    <li class="active"><a href="/order_admin">订单管理</a></li>
   </ul>
   <ul class="navbar-nav nav navbar-right">
     <li>
@@ -32,6 +33,7 @@
 <% end %>
 
 <!-- 页面主体 -->
+<div class="order-back"><a href="/order_admin" class="btn btn-success">返回</a></div>
 <div class="order-id"><%= "订单编号 : ##{format("%012d", order.id)}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="order-time"><%= "订单时间 : #{order.created_at}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="panel panel-success">
@@ -110,7 +112,6 @@
         <ul class="list-unstyled order-sum-row">
           <li class="text-right"><p><%= "订单金额：#{format("%10.2f", order.sum_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
           <li class="text-right"><p><%= "折扣金额：#{format("%10.2f", order.sum_discount)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
-          <li class="text-right"><a href="/items" class="btn btn-success">确认</a></li>
         </ul>
       </td>
     </tfoot>

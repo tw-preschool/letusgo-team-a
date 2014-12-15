@@ -17,10 +17,10 @@ feature 'shopping cart page' do
 
     feature 'given an empty cart' do
         scenario "should get correct shopping list and price when a user add 3瓶雪碧 and 3斤苹果 in cart and visit '/cart'", js: true do
-            visit '/views/items.html'
+            visit '/items'
             (1..3).each do page.find(:xpath, '//button[../../td[contains(.,"雪碧")]]').click end
             (1..3).each do page.find(:xpath, '//button[../../td[contains(.,"苹果")]]').click end
-            visit '/views/cart.html'
+            visit '/cart'
             expect(page).to have_selector(:xpath, '//td[../td[contains(.,"雪碧")]][contains(.,"6.00")]')
             expect(page).to have_selector(:xpath, '//td[../td[contains(.,"苹果")]][contains(.,"16.50")]')
             expect(page).to have_selector('#totalPrice', text: '22.5')
@@ -31,9 +31,9 @@ feature 'shopping cart page' do
         scenario "should get correct shopping list and price when a user continully add 3瓶雪碧 in nonempty cart and visit '/cart'", js: true do
             visit '/'
             page.execute_script 'sessionStorage.count=6; sessionStorage.itemCount=JSON.stringify({"2":3,"3":3});'
-            visit '/views/items.html'
+            visit '/items'
             (1..3).each do page.find(:xpath, '//button[../../td[contains(.,"雪碧")]]').click end
-            visit '/views/cart.html'
+            visit '/cart'
             expect(page).to have_selector(:xpath, '//td[../td[contains(.,"雪碧")]][contains(.,"12.00")]')
             expect(page).to have_selector(:xpath, '//td[../td[contains(.,"苹果")]][contains(.,"16.50")]')
             expect(page).to have_selector('#totalPrice', text: '28.5')
@@ -44,7 +44,7 @@ feature 'shopping cart page' do
             page.execute_script 'sessionStorage.count=6; sessionStorage.itemCount=JSON.stringify({"2":3,"3":3});'
             # restart Selenium driver
             Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
-            visit '/views/cart.html'
+            visit '/cart'
             expect(page.find(:xpath, '//tbody[..[contains(@id,"item_list")]]').text).to eq("")
             expect(page).to have_selector('#totalPrice', text: '0.0')
         end
@@ -52,7 +52,7 @@ feature 'shopping cart page' do
         scenario "sum price should change correspondingly when a user visit '/cart' and change the amount of 苹果 in nonempty cart", js: true do
             visit '/'
             page.execute_script 'sessionStorage.count=6; sessionStorage.itemCount=JSON.stringify({"2":3,"3":3});'
-            visit '/views/cart.html'
+            visit '/cart'
             page.find(:xpath, '//button[contains(.,"+")][./ancestor::tr/td[contains(.,"雪碧")]]').click
             expect(page.find(:xpath, '//input[./ancestor::tr/td[contains(.,"雪碧")]]').value).to eq("4")
             expect(page).to have_selector('#totalPrice', text: '25.5')

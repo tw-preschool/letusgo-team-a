@@ -10,6 +10,8 @@ require 'json'
 require './models/product'
 require './models/administrator'
 require './models/order'
+require './models/trade_association'
+require './models/trade_promotion_association'
 
 class POSApplication < Sinatra::Base
     configure do
@@ -157,14 +159,31 @@ class POSApplication < Sinatra::Base
         end
     end
 
+    get '/order_admin' do
+        admin_id = session[:admin_id]
+        redirect to('/login'), 303 if admin_id.nil?
+        admin = Administrator.where("id = ?", admin_id).first #rescue nil
+        if admin
+            content_type :html
+            if(params["id"])
+                erb :order_detail_admin, locals:{order:Order.where(id:params["id"].to_i).first}
+            else
+                erb :order_admin, locals:{orders:Order.find(:all, :order => "created_at DESC")}
+            end
+        else
+          redirect to('/login'), 303
+        end
+    end
+
     post '/payment' do
         cart_data = JSON.parse params[:cart_data]
-        @order = Order.new()
-        @order.init_with_data cart_data
-        @order.update_price
-
+        order = Order.new
+        order.init_with_data cart_data
+        order.update_price
+        order.save
+        # puts Order.last.products.to_json
         content_type :html
-        erb :'/payment'
+        erb :payment, locals:{order: order}
     end
 
     after do
