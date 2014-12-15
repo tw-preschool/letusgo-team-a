@@ -116,13 +116,6 @@ class POSApplication < Sinatra::Base
         erb :cart
     end
 
-
-    get '/edit/:id' do
-        @product = Product.find(params[:id])
-        content_type :html
-        erb :edit
-    end
-
     post '/edit/:id' do
         product = Product.find(params[:id])
         product.attributes ={
