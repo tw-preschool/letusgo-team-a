@@ -1,4 +1,10 @@
 class Product < ActiveRecord::Base
+	has_many :trade_associations, class_name: "TradeAssociation", dependent: :destroy
+	has_many :relative_orders, through: :trade_associations
+
+	has_many :trade_promotion_associations, class_name: "TradePromotionAssociation", dependent: :destroy
+	has_many :relative_promotion_orders, through: :trade_promotion_associations
+
 	attr_accessor :kindred_price, :amount, :discount_amount
 	@kindred_price = 0
 	@amount = 0

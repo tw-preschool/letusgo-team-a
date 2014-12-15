@@ -19,3 +19,19 @@ body{
 .promotion {
   width: 15%;
 }
+.order-id, .order-time {
+  font-size: 120%;
+  font-weight: bold;
+  margin: 5px;
+}
+.order-time {
+	margin-bottom: 10px;
+}
+.order-sum-row {
+	font-size: 105%;
+	font-weight: bold;
+	margin-top: 10px;
+}
+.order-back {
+	margin-bottom: 20px;
+}

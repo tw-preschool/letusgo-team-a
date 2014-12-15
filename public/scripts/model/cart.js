@@ -18,6 +18,7 @@ $(document).ready(function () {
         postForm.appendChild(postText);
         document.body.appendChild(postForm);
         postForm.submit();
+        window.sessionStorage.clear();
         return false;
 	});
 });
