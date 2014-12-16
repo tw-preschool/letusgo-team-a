@@ -4,7 +4,7 @@ $(document).ready(function () {
 	$('#pay_btn').click( function() {
 		if(cart.getCartCount() <= 0) {
 			alert("请先选购商品吧!");
-			window.location = '/views/items.html';
+			window.location = '/items';
 			return false;
 		}
 		var postForm = document.createElement("form");
