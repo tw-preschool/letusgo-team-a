@@ -34,7 +34,7 @@
       </ul>
       <ul class="navbar-nav nav navbar-right">
         <li>	  
-          <a href="/entry">登录</a>
+          <a href="entry">登录</a>
 	</li>
         <li>
           <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
@@ -48,19 +48,54 @@
 </nav>
 <!-- 欢迎文字 -->
   <div class="container">
-    <div class="jumbotron">
-      <h1>Welcome to Let's Go!</h1>
-      <p>
-        商店里进行购物结算时会使用收银机（POS）系统，这台收银机会在结算时根据 客户的购物车（Cart）中的商品（Item）和商店正在进行的优惠活动（Promotion）进行结算和打印购物清单。
-        已知该商店正在对部分商品进行”买二赠一“的优惠活动。我们需要实现一个名为printInventory函数，该函数能够将指定格式的数据作为参数 输入，然后在浏览器的控制台中输出结算清单的文本。
-      </p>
-      <a class="btn btn-lg btn-danger" href="/items">Let's Go</a>
-    </div>
+    <form>
+	<div class="tr">
+	    <div class="td">用户名(email):</div>
+	    <div class="td"><input type="text" name="user" id="user" /></div>
+	</div>
+	<div class="tr">
+	    <div class="td">密码:</div>
+	    <div class="td"><input type="text" name="pwd" id="pwd" /></div>
+	</div>
+	<div class="tr">
+	    <div class="td"><input type="button" class="register" value="注册" /></div>
+	    <div class="td"><button type="submit" class="logOn">提交</button></div>
+	</div>
+    </form>
+    <section id="register">
+	<form>
+	<div class="tr">
+	    <div class="td">用户名(email):</div>
+	    <div class="td"><input type="text" name="newUser" id="newUser" /></div>
+	</div>
+	<div class="tr">
+	    <div class="td">密码:</div>
+	    <div class="td"><input type="text" name="newPwd" id="newPwd" /></div>
+	</div>
+	<div class="tr">
+	    <div class="td">姓名:</div>
+	    <div class="td"><input type="text" name="newPwd" id="newPwd" /></div>
+	</div>
+	<div class="tr">
+	    <div class="td">地址:</div>
+	    <div class="td"><input type="text" name="newPwd" id="newPwd" /></div>
+	</div>
+	<div class="tr">
+	    <div class="td">电话:</div>
+	    <div class="td"><input type="text" name="newPwd" id="newPwd" /></div>
+	</div>
+	<div class="tr">
+	    <div class="td"><a href="/entry">取消</a>
+	    <div class="td"><button type="submit">确定</button></div>
+	</div>
+    	</form>
+    </section>
   </div>
 
 <script type="text/javascript" src="lib/jquery-2.1.1/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="lib/lodash-2.4.1/lodash.compat.js"></script>
+<script type="text/javascript" src="scripts/register.js"></script>
 <script type="text/javascript" src="scripts/count.js"></script>
 
 </body>

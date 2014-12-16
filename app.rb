@@ -187,6 +187,11 @@ class POSApplication < Sinatra::Base
         erb :payment, locals:{order: order}
     end
 
+    get '/entry' do
+        content_type :html
+        erb :entry
+    end
+
     after do
         ActiveRecord::Base.connection.close
     end

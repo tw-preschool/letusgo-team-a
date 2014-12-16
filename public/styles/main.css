@@ -35,3 +35,7 @@ body{
 .order-back {
 	margin-bottom: 20px;
 }
+/*用户登陆注册页*/
+#register {
+display: none;
+}
