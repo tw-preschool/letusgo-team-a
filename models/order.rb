@@ -9,8 +9,6 @@ class Order < ActiveRecord::Base
     has_many :promotion_associations, class_name: "TradePromotionAssociation", dependent: :destroy
     has_many :promotion_products, through: :promotion_associations, source: :product
 
-    validates :create_time, presence: true
-    
     after_initialize :init
 
     attr_reader :product_list, :discount_list

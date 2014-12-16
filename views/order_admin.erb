@@ -33,37 +33,41 @@
 <% end %>
 
 <!-- 页面主体 -->
-<div class="panel panel-success">
-  <div class="panel-heading"><h4>购物清单</h4></div>
-  <div id="pay-date"></div>
-  <table class="table table-bordered table-hover table-responsive">
-    <thead>
-      <tr>
-        <th>订单编号</th>
-        <th>订单时间</th>
-        <th>订单金额</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% orders.each do |order| %>
+<% if orders && orders.length > 0 %>
+  <div class="panel panel-success">
+    <div class="panel-heading"><h4>购物清单</h4></div>
+    <div id="pay-date"></div>
+    <table class="table table-bordered table-hover table-responsive">
+      <thead>
         <tr>
-          <td>
-            <%= "##{format("%012d", order.id)}" %>
-          </td>
-          <td>
-            <%= "#{order.created_at}" %>
-          </td>
-          <td>
-            <%= "#{order.sum_price}" %>
-          </td>
-          <td>
-            <a <%= "href=\'/order_admin?id=#{order.id}\'"%>>订单详情</a>
-          </td>
+          <th>订单编号</th>
+          <th>订单时间</th>
+          <th>订单金额</th>
+          <th>操作</th>
         </tr>
-      <% end %>
-    </tbody>
-    <tfoot>
-    </tfoot>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        <% orders.each do |order| %>
+          <tr>
+            <td>
+              <%= "##{format("%012d", order.id)}" %>
+            </td>
+            <td>
+              <%= "#{order.created_at}" %>
+            </td>
+            <td>
+              <%= "#{order.sum_price}" %>
+            </td>
+            <td>
+              <a <%= "href=\'/order_admin?id=#{order.id}\'"%>>订单详情</a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+  </div>
+<% else %>
+  <div>抱歉，暂时没有订单！</div>
+<% end %>

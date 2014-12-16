@@ -168,7 +168,8 @@ class POSApplication < Sinatra::Base
             if(params["id"])
                 erb :order_detail_admin, locals:{order:Order.where(id:params["id"].to_i).first}
             else
-                erb :order_admin, locals:{orders:Order.find(:all, :order => "created_at DESC")}
+                orders = Order.find(:all, :order => "created_at DESC") rescue ActiveRecord::RecordNotFound
+                erb :order_admin, locals:{orders: orders}
             end
         else
           redirect to('/login'), 303
