@@ -1,0 +1,20 @@
+.tip1{
+	position: absolute;
+	top: 155px;
+	right: 425px;
+}
+.tip3{
+	position: absolute;
+	top: 195px;
+	right: 365px;
+}
+#signUp{
+	position: absolute;
+	top:70px;
+	right: 30px;
+}
+.form-error-text{
+	position: absolute;
+	top: inherit;
+	right: inherit;
+}

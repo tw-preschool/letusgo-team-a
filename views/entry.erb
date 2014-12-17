@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.css">
   <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap-theme.css">
   <link rel="stylesheet" href="styles/main.css"/>
+  <link rel="stylesheet" href="styles/login.css"/>
+  <link rel="stylesheet" href="styles/entry.css"/>
   <script type="text/javascript">
     function login()
     {
@@ -58,28 +60,25 @@
 <!-- 欢迎文字 -->
   <div class="container">
     <section id="entry">
-  <form action="/entry" method="post" role="form" onsubmit="login();">
-    <div class="tr">
-    <div class="td">用户名(email):</div>
-    <div class="td">
-      <input type="text" name="user" id="user" />
-      <% if(error_text rescue nil) %>
-      <p><%= "#{error_text} 请重新输入!"%></p>
-      <% end %>
-      <p class="tip1"></p>
+  <form action="/entry" class="form-signin" method="post" role="form" onsubmit="login();">
+    <h3 class="form-signin-heading">请登入...</h3>
+    <div class="tr ">
+      <input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.."/>
     </div>
-    </div>
+    <p class="tip1"></p>                     
     <div class="tr">
-    <div class="td">密码:</div>
     <div class="td">
 	    <input id="pwdHidden" type="hidden" name="pwd" value="" />
-	    <input id="pwd" type="password" required />
-      <p class="tip3"></p>
+	    <input id="pwd" type="password" class="form-control" required placeholder="请输入密码.."/>
     </div>
     </div>
+    <p class="tip3"></p>
     <div class="tr">
-      <div class="td"><a href="/register">注册</a></div>
-      <div class="td"><button type="submit" class="logOn">提交</button></div>
+      <div class="td"><a href="/register" class="btn btn-sm btn-danger" id="signUp">注册</a></div>
+      <div class="td"><button type="submit" class="logOn btn btn-lg btn-primary btn-block">提交</button></div>
+      <% if(error_text rescue nil) %>
+      <p class="form-error-text "><%= "#{error_text} 请重新输入!"%></p>
+      <% end %>
     </div>
   </form>
 </section>
