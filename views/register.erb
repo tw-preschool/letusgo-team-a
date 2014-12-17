@@ -58,45 +58,32 @@
   <div class="container">
 <section id="register">
   <form action="/register" method="post" role="form" onsubmit="login();">
-    <div class="tr">
-      <div class="td">*用户名(email):</div>
-      <div class="td">
-        <input type="text" name="newUser" id="newUser" />
-        <% if(text rescue nil) %>
-        <p><%= "#{text} 请重新输入!"%></p>
-        <% end %>
-        <p class="tip1"></p>
-      </div>
-    </div>
-    <div class="tr">
-      <div class="td">*密码:</div>
-      <div class="td">
-      <input id="newPwdHidden" type="hidden" name="newPwd" value="" />
-      <input type="password" id="newPwd" required />
-      <p class="tip3"></p>
-      </div>
-    </div>
-    <div class="tr">
-      <div class="td">*姓名:</div>
-      <div class="td">
-        <input type="text" name="newName" id="newName" required />
-        <p class="tip4"></p>
-      </div>
-    </div>
-    <div class="tr">
-      <div class="td">*地址:</div>
-      <div class="td"><input type="text" name="addr" id="newAddress" required /></div>
-    </div>
-    <div class="tr">
-      <div class="td">*手机号:</div>
-      <div class="td"><input type="text" name="phone" id="newPhone" required />
-      <p class="tip2"></p>
-    </div>
-    </div>
-    <div class="tr">
-      <div class="td"><a href="/entry">取消</a></div>
-      <div class="td"><button type="submit" class="newLogOn">确定</button></div>
-    </div>
+    用户名:
+    <input type="text" name="newUser" id="newUser" placeholder="email@example.com"/>
+    <% if(text rescue nil) %>
+      <p>
+        <%= "#{text} 请重新输入!"%>
+      </p>
+    <% end %>
+    <p class="tip1"></p>
+    密码:
+    <input id="newPwdHidden" type="hidden" name="newPwd" value="" />
+    <input type="password" id="newPwd" required placeholder="请输入六位以上"/>
+    <p class="tip3"></p>
+    姓名:
+    <input type="text" name="newName" id="newName" required placeholder="请输入字母或汉字"/>
+    <p class="tip4"></p>
+    地址:
+    <input type="text" name="addr" id="newAddress" required placeholder="请输入默认地址"/>
+    手机号:
+    <input type="text" name="phone" id="newPhone" required placeholder="1XX xxxx xxxx"/>
+    <p class="tip2"></p>
+    <a href="/entry">
+      取消
+    </a>
+    <button type="submit" class="newLogOn">
+      确定
+    </button>
   </form>
 </section>
   </div>

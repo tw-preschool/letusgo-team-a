@@ -33,7 +33,7 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="active">
+        <li>
           <a href="/">主页</a>
         </li>
         <li>
@@ -41,7 +41,7 @@
         </li>
       </ul>
       <ul class="navbar-nav nav navbar-right">
-        <li>
+        <li class="active"> 
           <a href="/entry">登录</a>
 	      </li>
         <li>
@@ -60,28 +60,22 @@
 <!-- 欢迎文字 -->
   <div class="container">
     <section id="entry">
-  <form action="/entry" class="form-signin" method="post" role="form" onsubmit="login();">
-    <h3 class="form-signin-heading">请登入...</h3>
-    <div class="tr ">
-      <input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.."/>
-    </div>
-    <p class="tip1"></p>                     
-    <div class="tr">
-    <div class="td">
-	    <input id="pwdHidden" type="hidden" name="pwd" value="" />
-	    <input id="pwd" type="password" class="form-control" required placeholder="请输入密码.."/>
-    </div>
-    </div>
-    <p class="tip3"></p>
-    <div class="tr">
-      <div class="td"><a href="/register" class="btn btn-sm btn-danger" id="signUp">注册</a></div>
-      <div class="td"><button type="submit" class="logOn btn btn-lg btn-primary btn-block">提交</button></div>
-      <% if(error_text rescue nil) %>
-      <p class="form-error-text "><%= "#{error_text} 请重新输入!"%></p>
-      <% end %>
-    </div>
-  </form>
-</section>
+      <form action="/entry" class="form-signin" method="post" role="form" onsubmit="login();">
+        <h3 class="form-signin-heading">请登入...</h3>
+        <input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.."/>
+        <p class="tip1"></p>                     
+    	  <input id="pwdHidden" type="hidden" name="pwd" value="" />
+    	  <input id="pwd" type="password" class="form-control" required placeholder="请输入密码.."/>
+        <p class="tip3"></p>
+        <a href="/register" class="btn btn-sm btn-danger" id="signUp">注册</a>
+        <button type="submit" class="logOn btn btn-lg btn-primary btn-block">提交</button>
+        <% if(error_text rescue nil) %>
+          <p class="form-error-text ">
+            <%= "#{error_text} 请重新输入!"%>
+          </p>
+        <% end %>
+      </form>
+    </section>
   </div>
 
 <script type="text/javascript" src="lib/jquery-2.1.1/jquery-2.1.1.js"></script>
