@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Pos Web</title>
+  <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap-theme.css">
   <link rel="stylesheet" href="styles/main.css"/>
 <script type="text/javascript">
   function login()
@@ -38,7 +40,10 @@
       <ul class="navbar-nav nav navbar-right">
         <li>
           <a href="/entry">登录</a>
-  </li>
+        </li>
+        <li>
+          <a href="/entry">注销</a>
+        </li>
         <li>
           <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
         </li>
@@ -55,28 +60,36 @@
   <form action="/register" method="post" role="form" onsubmit="login();">
     <div class="tr">
       <div class="td">*用户名(email):</div>
-      <div class="td"><input type="text" name="newUser" id="newUser" />
-      <p class="tip1"></p>
+      <div class="td">
+        <input type="text" name="newUser" id="newUser" />
+        <% if(text rescue nil) %>
+        <p><%= "#{text} 请重新输入!"%></p>
+        <% end %>
+        <p class="tip1"></p>
       </div>
     </div>
     <div class="tr">
       <div class="td">*密码:</div>
       <div class="td">
       <input id="newPwdHidden" type="hidden" name="newPwd" value="" />
-      <input type="text" id="newPwd" />
+      <input type="password" id="newPwd" required />
+      <p class="tip3"></p>
       </div>
     </div>
     <div class="tr">
       <div class="td">*姓名:</div>
-      <div class="td"><input type="text" name="newName" id="newName" /></div>
+      <div class="td">
+        <input type="text" name="newName" id="newName" required />
+        <p class="tip4"></p>
+      </div>
     </div>
     <div class="tr">
       <div class="td">*地址:</div>
-      <div class="td"><input type="text" name="addr" id="newAddress" /></div>
+      <div class="td"><input type="text" name="addr" id="newAddress" required /></div>
     </div>
     <div class="tr">
       <div class="td">*手机号:</div>
-      <div class="td"><input type="text" name="phone" id="newPhone" />
+      <div class="td"><input type="text" name="phone" id="newPhone" required />
       <p class="tip2"></p>
     </div>
     </div>
@@ -87,6 +100,11 @@
   </form>
 </section>
   </div>
+
+<script type="text/javascript" src="lib/jquery-2.1.1/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="lib/lodash-2.4.1/lodash.compat.js"></script>
+<script type="text/javascript" src="scripts/count.js"></script>
 
 </body>
 </html>

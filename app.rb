@@ -208,6 +208,7 @@ class POSApplication < Sinatra::Base
     end
 
     get '/entry' do
+      session[:user_id] = nil
       content_type :html
       erb :entry
     end
@@ -235,16 +236,22 @@ class POSApplication < Sinatra::Base
     end
 
     post '/register' do
-	     user = User.create(:email => params[:newUser],
-            :password => params[:newPwd],
-            :name => params[:newName],
-            :address => params[:addr],
-            :phone => params[:phone])
+        oldUser = User.where("email = ?", params[:newUser]).first #rescue nil
+        if oldUser.nil?
+             user = User.create(:email => params[:newUser],
+                :password => params[:newPwd],
+                :name => params[:newName],
+                :address => params[:addr],
+                :phone => params[:phone])
 
-        user.save
-        content_type :html
-        redirect to('/'), 303
-   end
+             user.save
+             content_type :html
+             redirect to('/'), 303
+        else
+  	         content_type :html
+             erb :register, locals:{text:"用户名已被抢注过啦!"}
+        end
+    end
 
     after do
         ActiveRecord::Base.connection.close

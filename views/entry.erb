@@ -43,6 +43,9 @@
           <a href="/entry">登录</a>
 	      </li>
         <li>
+          <a href="/entry">注销</a>
+        </li>
+        <li>
           <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
         </li>
         <li>
@@ -59,10 +62,11 @@
     <div class="tr">
     <div class="td">用户名(email):</div>
     <div class="td">
-      <input type="text" name="user" id="user" autofocus />
+      <input type="text" name="user" id="user" />
       <% if(error_text rescue nil) %>
-      <p class="tip1"><%= "#{error_text} 请重新输入!"%></p>
+      <p><%= "#{error_text} 请重新输入!"%></p>
       <% end %>
+      <p class="tip1"></p>
     </div>
     </div>
     <div class="tr">
@@ -70,6 +74,7 @@
     <div class="td">
 	    <input id="pwdHidden" type="hidden" name="pwd" value="" />
 	    <input id="pwd" type="password" required />
+      <p class="tip3"></p>
     </div>
     </div>
     <div class="tr">

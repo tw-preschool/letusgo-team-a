@@ -34,8 +34,11 @@
       <ul class="navbar-nav nav navbar-right">
         <li>
           <% if(msg rescue nil) %>
-          <a href="/items"><%= "#{msg}"%></a>
+          <a href="/cart"><%= "#{msg}"%></a>
           <% end %>
+        </li>
+        <li>
+          <a href="/entry">注销</a>
         </li>
         <li class="active">
           <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
