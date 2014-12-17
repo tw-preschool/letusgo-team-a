@@ -33,9 +33,17 @@
         </li>
       </ul>
       <ul class="navbar-nav nav navbar-right">
-        <li>	  
-          <a href="/entry">登录</a>
-	</li>
+        <li>
+          <% if(msg rescue nil)
+               href = ""
+               if("#{msg}" == "登录")
+                 href = "/entry"
+               else
+                href = "/"
+               end %>
+          <a href="<%= href %>"><%= "#{msg}"%></a>
+          <% end %>
+        </li>
         <li>
           <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
         </li>

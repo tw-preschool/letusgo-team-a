@@ -9,6 +9,7 @@ require 'json'
 
 require './models/product'
 require './models/administrator'
+require './models/user'
 require './models/order'
 require './models/trade_association'
 require './models/trade_promotion_association'
@@ -39,7 +40,13 @@ class POSApplication < Sinatra::Base
 
     get '/' do
         content_type :html
-        erb :index
+        user_id = session[:user_id]
+        user = User.where("id = ?", user_id).first #rescue nil
+        if user
+          erb :index, locals:{msg:"已登录!"}
+        else
+          erb :index, locals:{msg:"登录"}
+        end
     end
 
     get '/products' do
@@ -76,10 +83,10 @@ class POSApplication < Sinatra::Base
 
     post '/products' do
         product = Product.create(:name => params[:productName],
-                            :price => params[:productPrice],
-                            :unit => params[:productUnit],
-                            :stock => params[:productStock],
-                            :detail => params[:productDetail])
+            :price => params[:productPrice],
+            :unit => params[:productUnit],
+            :stock => params[:productStock],
+            :detail => params[:productDetail])
 
         product.save
         redirect to('/admin'), 303
@@ -105,12 +112,25 @@ class POSApplication < Sinatra::Base
 
     get '/items' do
         content_type :html
-        erb :items
+        user_id = session[:user_id]
+        user = User.where("id = ?", user_id).first #rescue nil
+        if user
+          erb :items, locals:{msg:"已登录!"}
+        else
+          erb :items, locals:{msg:"登录"}
+        end
     end
 
     get '/cart' do
-        content_type :html
-        erb :cart
+        user_id = session[:user_id]
+        redirect to('/entry'), 303 if user_id.nil?
+        user = User.where("id = ?", user_id).first #rescue nil
+        if user
+          content_type :html
+          erb :cart, locals:{msg:"已登录!"}
+        else
+          redirect to('/entry'), 303
+        end
     end
 
     post '/edit/:id' do
@@ -188,9 +208,43 @@ class POSApplication < Sinatra::Base
     end
 
     get '/entry' do
-        content_type :html
-        erb :entry
+      content_type :html
+      erb :entry
     end
+
+    post '/entry' do
+	      userEmail = params[:user]
+        password = params[:pwd]
+        if userEmail.nil? || userEmail.empty? || password.nil? || password.empty?
+          content_type :html
+          erb :entry, locals:{error_text: "用户名和密码不能为空!"}
+        end
+        user = User.where("email = ? AND password = ?", userEmail, password).first #rescue nil
+        if user
+            session[:user_id] = user.id
+            redirect to('/')
+        else
+            content_type :html
+            erb :entry, locals:{error_text:"用户名或密码错误!"}
+        end
+    end
+
+    get '/register' do
+        content_type :html
+        erb :register
+    end
+
+    post '/register' do
+	     user = User.create(:email => params[:newUser],
+            :password => params[:newPwd],
+            :name => params[:newName],
+            :address => params[:addr],
+            :phone => params[:phone])
+
+        user.save
+        content_type :html
+        redirect to('/'), 303
+   end
 
     after do
         ActiveRecord::Base.connection.close
