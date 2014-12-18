@@ -33,7 +33,7 @@
 <% end %>
 
 <!-- 页面主体 -->
-<% if orders && orders.length > 0 %>
+<% if orders && orders.is_a?(Array) && orders.length > 0 %>
   <div class="panel panel-success">
     <div class="panel-heading"><h4>购物清单</h4></div>
     <div id="pay-date"></div>
