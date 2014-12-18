@@ -22,7 +22,7 @@ feature 'Pos Login Page' do
         expect(current_url).to end_with('/admin')
     end
 
-    scenario 'stay in login page with alert info when an unauthorized visitor submit incorrect login request' do
+    scenario 'stay in login page with alert info when an unauthorized visitor submit incorrect login request', :js => true do
         visit '/login'
         fill_in 'adminname', :with => 'admin'
         fill_in 'form_pass', :with => 'wrongpassword'

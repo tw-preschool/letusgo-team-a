@@ -11,8 +11,12 @@ feature 'shopping cart page' do
         items.push :name => '荔枝', :unit => '斤', :price => 15.00, :promotion => false, :stock => 0 ,:detail => '顽固性呃逆及五更泻者的食疗佳品'
         items.push :name => '电池', :unit => '个', :price => 2.00, :promotion => false, :stock => 20 ,:detail => '南孚电池 一节更比六节强'
         items.push :name => '方便面', :unit => '袋', :price => 4.50, :promotion => false, :stock => 1 ,:detail => '康师傅老坛酸菜'
-        items.each do |item| Product.create(item).to_json end
+        items.each do |item| Product.create(item) end
         # page = Capybara::Session.new(Capybara.current_driver, Capybara.app)
+        user = {email: 'test@test.com', password: Digest::SHA1.hexdigest('test'),
+                name: 'test', address: 'test', phone: '13312345678'}
+        User.create user
+        page.set_rack_session user_id: User.last.id
     end
 
     feature 'given an empty cart' do
@@ -44,6 +48,7 @@ feature 'shopping cart page' do
             page.execute_script 'sessionStorage.count=6; sessionStorage.itemCount=JSON.stringify({"2":3,"3":3});'
             # restart Selenium driver
             Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
+            page.set_rack_session user_id: User.last.id
             visit '/cart'
             expect(page.find(:xpath, '//tbody[..[contains(@id,"item_list")]]').text).to eq("")
             expect(page).to have_selector('#totalPrice', text: '0.0')
