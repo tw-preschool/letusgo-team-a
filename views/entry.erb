@@ -47,11 +47,9 @@
     <section id="entry">
       <form action="/entry" class="form-signin" method="post" role="form" onsubmit="login();">
         <h3 class="form-signin-heading">请登入...</h3>
-        <input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.."/>
-        <p class="tip1"></p>
+        <input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.." autofocus/>
     	  <input id="pwdHidden" type="hidden" name="pwd" value="" />
     	  <input id="pwd" type="password" class="form-control" required placeholder="请输入密码.."/>
-        <p class="tip3"></p>
         <a href="/register" class="btn btn-sm btn-danger" id="signUp">注册</a>
         <button type="submit" class="logOn btn btn-lg btn-primary btn-block">提交</button>
         <% if(error_text rescue nil) %>

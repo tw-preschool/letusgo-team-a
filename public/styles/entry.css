@@ -1,13 +1,3 @@
-.tip1{
-	position: absolute;
-	top: 155px;
-	right: 425px;
-}
-.tip3{
-	position: absolute;
-	top: 195px;
-	right: 365px;
-}
 #signUp{
 	position: absolute;
 	top:70px;
@@ -17,4 +7,9 @@
 	position: absolute;
 	top: inherit;
 	right: inherit;
+}
+.form-inline{
+	max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
 }
