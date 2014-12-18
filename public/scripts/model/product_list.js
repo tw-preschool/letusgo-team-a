@@ -22,7 +22,7 @@ $( document ).ready( function () {
 			var row = $( '<tr><td>' + product.name + '</td><td>' + product.price + '</td><td>' + product.unit + '</td><td title="' + product.detail + '" class="nowarp">' + product.detail + '</td><td>' + promotionInfo + '</td><td>' + addButton + '</td></tr>' );
 			$( 'button', row ).click( function () {
 				var product_count = cartStorage.getItemCount( product.id );
-				if ( product_count < product.id ) {
+				if ( product_count < product.stock ) {
 					cartStorage.setCount( 'count' );
 					$( '#count' ).text( cartStorage.getCount( 'count' ) );
 					cartStorage.setItemCount( ( product.id ).toString() );
