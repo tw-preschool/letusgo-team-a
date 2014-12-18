@@ -1,24 +1,15 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Pos Web</title>
-  <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.css">
-  <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap-theme.css">
+<% content_for :style_chunk do%>
   <link rel="stylesheet" href="styles/main.css"/>
-<script type="text/javascript">
+  <script type="text/javascript">
   function login()
   {
     document.getElementById("newPwdHidden").value = hex_sha1(document.getElementById("newPwd").value);
     return true;
   }
-</script>
-</head>
-
-<body>
+  </script>
+<% end %>
 <!-- 导航栏 -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
+<% content_for :nav_lis do%>
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">切换导航</span>
@@ -52,10 +43,8 @@
         </li>
       </ul>
     </div>
-  </div>
-</nav>
+<% end %>
 <!-- 欢迎文字 -->
-  <div class="container">
 <section id="register">
   <form action="/register" method="post" role="form" onsubmit="login();">
     用户名:
@@ -86,12 +75,8 @@
     </button>
   </form>
 </section>
-  </div>
 
 <script type="text/javascript" src="lib/jquery-2.1.1/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="lib/lodash-2.4.1/lodash.compat.js"></script>
-<script type="text/javascript" src="scripts/count.js"></script>
 
-</body>
-</html>
