@@ -41,12 +41,9 @@
         </li>
       </ul>
       <ul class="navbar-nav nav navbar-right">
-        <li class="active"> 
+        <li class="active">
           <a href="/entry">登录</a>
 	      </li>
-        <li>
-          <a href="/entry">注销</a>
-        </li>
         <li>
           <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
         </li>
@@ -63,7 +60,7 @@
       <form action="/entry" class="form-signin" method="post" role="form" onsubmit="login();">
         <h3 class="form-signin-heading">请登入...</h3>
         <input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.."/>
-        <p class="tip1"></p>                     
+        <p class="tip1"></p>
     	  <input id="pwdHidden" type="hidden" name="pwd" value="" />
     	  <input id="pwd" type="password" class="form-control" required placeholder="请输入密码.."/>
         <p class="tip3"></p>
