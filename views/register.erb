@@ -1,6 +1,11 @@
 <% content_for :style_chunk do%>
   <link rel="stylesheet" href="styles/main.css"/>
+<<<<<<< HEAD
   <script type="text/javascript">
+=======
+  <link rel="stylesheet" href="styles/register.css"/>
+<script type="text/javascript">
+>>>>>>> two_nav_problem
   function login()
   {
     document.getElementById("newPwdHidden").value = hex_sha1(document.getElementById("newPwd").value);
@@ -45,6 +50,7 @@
     </div>
 <% end %>
 <!-- 欢迎文字 -->
+<<<<<<< HEAD
 <section id="register">
   <form action="/register" method="post" role="form" onsubmit="login();">
     用户名:
@@ -75,6 +81,86 @@
     </button>
   </form>
 </section>
+=======
+  <div class="container">
+    <section id="register">
+      <div class="jumbotron">
+      <form action="/register" class="form-horizontal" method="post" role="form" onsubmit="login();">
+        <h2 class="form-signin-heading">请登入...</h2><br/>
+        <div class="form-group">
+          <label for="newUser" class="col-sm-1 control-label">
+            用户名:
+          </label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="newUser" id="newUser" placeholder="email@example.com"/>
+          </div>
+            <% if(text rescue nil) %>
+            <p>
+              <%= "#{text} 请重新输入!"%>
+            </p>
+            <% end %>
+          <div class="col-sm-3">
+            <p class="tip1"></p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newPwd" class="col-sm-1 control-label">
+             密码:
+          </label>
+          <div class="col-sm-8">
+          <input id="newPwdHidden" class="form-control" type="hidden" name="newPwd" value="" />
+          <input type="password" class="form-control" id="newPwd" required placeholder="请输入六位以上"/>
+          </div>
+          <div class="col-sm-3">
+            <p class="tip3"></p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newName" class="col-sm-1 control-label">
+             姓名:
+          </label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" name="newName" id="newName" required placeholder="请输入字母或汉字"/>
+          </div>
+          <div class="col-sm-3">
+            <p class="tip4"></p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newAddress" class="col-sm-1 control-label">
+             地址:
+          </label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" name="addr" id="newAddress" required placeholder="请输入默认地址"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newPhone" class="col-sm-1 control-label">
+             手机号:
+          </label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" name="phone" id="newPhone" required placeholder="1XX xxxx xxxx"/>
+          </div>
+          <div class="col-sm-3">
+            <p class="tip2"></p>
+          </div>
+        </div>
+
+        <a href="/entry">
+          取消
+        </a>
+        <button type="submit" class="newLogOn">
+          确定
+        </button>
+      </form>
+    </div>
+    </section>
+  </div>
+>>>>>>> two_nav_problem
 
 <script type="text/javascript" src="lib/jquery-2.1.1/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
