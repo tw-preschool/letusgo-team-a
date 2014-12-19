@@ -1,14 +1,14 @@
 <% content_for :style_chunk do%>
-  <link rel="stylesheet" href="../styles/main.css"/>
-  <link rel="stylesheet" href="../styles/admin.css"/>
+<link rel="stylesheet" href="../styles/main.css"/>
+<link rel="stylesheet" href="../styles/admin.css"/>
 <% end %>
 <% content_for :nav_lis do%>
 <div class="navbar-header">
   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-    <span class="sr-only">切换导航</span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
+  <span class="sr-only">切换导航</span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
   </button>
   <a href="/items" class="navbar-brand">Let's Go</a>
 </div>
@@ -32,56 +32,54 @@
   </ul>
 </div>
 <% end %>
-
 <!-- 页面主体 -->
-<div class="container">
-  <div class="panel panel-success">
-    <div class="panel-heading text-center"><h4>商品列表</h4></div>
-    <table id="item-table" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>名称</th>
-          <th>单价(元)</th>
-          <th>单位</th>
-          <th>库存</th>
-          <th>描述</th>
-          <th>操作</th>
-          <th>优惠</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% Product.all.each do |item| %>
-        <tr class = "tr">
-          <td><%= item.name %></td>
-          <td class="tableWidth"><%= item.price %></td>
-          <td class="tableWidth"><%= item.unit %></td>
-          <td class="tableWidth"><%= item.stock %></td>
-          <td title="<%= item.detail %>" class="nowarp"><%= item.detail %></td>
-          <td class="operating">
+<div class="panel panel-success">
+  <div class="panel-heading text-center"><h4>商品列表</h4></div>
+  <table id="item-table" class="table table-bordered">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>单价(元)</th>
+        <th>单位</th>
+        <th>库存</th>
+        <th>描述</th>
+        <th>操作</th>
+        <th>优惠</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Product.all.each do |item| %>
+      <tr class = "tr">
+        <td><%= item.name %></td>
+        <td class="tableWidth"><%= item.price %></td>
+        <td class="tableWidth"><%= item.unit %></td>
+        <td class="tableWidth"><%= item.stock %></td>
+        <td title="<%= item.detail %>" class="nowarp"><%= item.detail %></td>
+        <td class="operating">
           <a title="/edit/<%=item.id%>" class="btn btn-sm btn-success modify"><span class="glyphicon glyphicon-pencil"></span>编辑</a>
           <a href="/delete/<%= item.id %>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span>删除</a>
-          </td>
-          <td class="promotion"> 
+        </td>
+        <td class="promotion">
           <span id = "inline-promotion<%= item.id %>"></span>
-	  </td>
-        </tr>
-	<% end %>
-        <tr>
-          <td>
-            <a class="btn btn-warning btn-lg add"><span class="glyphicon glyphicon-plus"></span>添加商品</a>
-          </td>
-        </tr>
-      </tbody>
-      <tfoot>
-      </tfoot>
-    </table>
-    <div id = "hidden">
-	<div id = "bg"></div>
-    </div>
-    <!-- 编辑 -->
-    <div id = "modify">
+        </td>
+      </tr>
+      <% end %>
+      <tr>
+        <td>
+          <a class="btn btn-warning btn-lg add"><span class="glyphicon glyphicon-plus"></span>添加商品</a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+  <div id = "hidden">
+    <div id = "bg"></div>
+  </div>
+  <!-- 编辑 -->
+  <div id = "modify">
     <div class="panel-heading">
-    	<h2>请修改产品信息</h2>
+      <h2>请修改产品信息</h2>
     </div>
     <div class="panel-body">
       <form method="post" role="form" class="form1">
@@ -93,7 +91,6 @@
           <label>价格(元)</label>
           <input type="number" class="form-control input1" name="productPrice">
           <p id="priceErrorTip"></p>
-
         </div>
         <div class="form-group">
           <label>单位</label>
@@ -112,12 +109,12 @@
         <a href="/admin" class="btn btn-default">取消</a>
       </form>
     </div>
-    </div>
-    <!--添加商品-->
-    <div id="add">
+  </div>
+  <!--添加商品-->
+  <div id="add">
     <div class="panel-heading">
-    	<h2>请输入产品信息</h2>
-    </div> 
+      <h2>请输入产品信息</h2>
+    </div>
     <div class="panel-body">
       <form action="/products" method="post">
         <div class="form-group">
@@ -128,7 +125,6 @@
           <label >单价(元)</label>
           <input class="form-control" name="productPrice">
           <p class="form-error-text" id="priceErrorTip"></p>
-
         </div>
         <div class="form-group">
           <label >单位</label>
@@ -148,7 +144,6 @@
           <a href="/admin" class="btn btn-default">取消</a>
         </div>
       </form>
-    </div>
     </div>
   </div>
 </div>

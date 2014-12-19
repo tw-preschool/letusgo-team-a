@@ -1,37 +1,66 @@
-body{
-  margin-top:70px;
+body
+{
+    margin-top: 70px;
 }
-.form-inline .input-group > .form-control{
-  width: 43px;
+.form-inline .input-group > .form-control
+{
+    width: 43px;
 }
-.table-width-cart th{
-  width: 20%;
+.table-width-cart th
+{
+    width: 20%;
 }
-.table-width-items th{
-  width: 18%;
+.table-width-items th
+{
+    width: 18%;
 }
-.operating {
-  width: 16%;
+.operating
+{
+    width: 16%;
 }
-.tableWidth {
-  width: 10%;
+.tableWidth
+{
+    width: 10%;
 }
-.promotion {
-  width: 15%;
+.promotion
+{
+    width: 15%;
 }
-.order-id, .order-time {
-  font-size: 120%;
-  font-weight: bold;
-  margin: 5px;
+.order-id,
+.order-time
+{
+    font-size: 105%;
+    font-weight: bold;
+
+    margin: 5px;
 }
-.order-time {
-	margin-bottom: 10px;
+.order-time
+{
+    margin-bottom: 10px;
 }
-.order-sum-row {
-	font-size: 105%;
-	font-weight: bold;
-	margin-top: 10px;
+.order-sum-row
+{
+    font-size: 105%;
+    font-weight: bold;
+
+    margin-top: 10px;
 }
-.order-back {
-	margin-bottom: 20px;
+.order-back
+{
+    margin-bottom: 20px;
+    text-align: right;
+}
+.content-body {
+	margin-top: 100px;
+}
+.message-bar
+{
+    position: absolute;
+    top: 50px;
+
+    width: 100%;
+}
+.message-bar .alert
+{
+    padding: 5px;
 }

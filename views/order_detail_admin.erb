@@ -33,7 +33,6 @@
 <% end %>
 
 <!-- 页面主体 -->
-<div class="order-back"><a href="/order_admin" class="btn btn-success">返回</a></div>
 <div class="order-id"><%= "订单编号 : ##{format("%012d", order.id)}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="order-time"><%= "订单时间 : #{order.created_at}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="panel panel-success">
@@ -117,3 +116,5 @@
     </tfoot>
   </table>
 </div>
+<div class="order-back"><a href="/order_admin" class="btn btn-success">返回</a></div>
+

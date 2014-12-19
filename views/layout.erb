@@ -16,7 +16,9 @@
       </div>
     </nav>
 
-    <div class="container">
+    <%= erb :'layout_content/layout_flash' %>
+
+    <div class="container content-body">
       <%= yield %>
     </div>
     <script type="text/javascript" src="../lib/jquery-2.1.1/jquery-2.1.1.js"></script>

@@ -1,0 +1,17 @@
+<% 
+    flash_status = {
+        success: "alert-success", warning: "alert-warning",
+        error:   "alert-danger",  notice:  "alert-info"
+    }
+%>
+
+<div class="message-bar">
+    <% flash_status.each do |state, alert_class| %>
+        <% if flash[:"#{state}"] %>
+            <div class="alert <%= alert_class %>" >
+                <a class="close" data-dismiss="alert">×</a>
+                <div class="notice"><%= flash[:"#{state}"] %></div>
+            </div>
+        <% end %>
+    <% end %>
+</div>

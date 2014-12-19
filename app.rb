@@ -4,6 +4,7 @@ require 'sinatra/base'
 require 'sinatra/contrib'
 require 'sinatra/reloader'
 require 'rack/contrib'
+require 'sinatra/flash'
 require 'active_record'
 require 'json'
 
@@ -17,6 +18,8 @@ require './models/trade_promotion_association'
 class POSApplication < Sinatra::Base
 	configure do
 		helpers Sinatra::ContentFor
+		enable :sessions
+		register Sinatra::Flash
 		use Rack::Session::Pool, :expire_after => 60 * 60 * 24 * 30
 	end
 
@@ -94,13 +97,17 @@ class POSApplication < Sinatra::Base
 
 	get '/admin' do
 		admin_id = session[:admin_id]
-		redirect to('/login'), 303 if admin_id.nil?
+		if admin_id.nil?
+			flash.next[:warning] = '请登录后继续操作...'
+			redirect to('/login'), 303
+		end 
 		admin = Administrator.where("id = ?", admin_id).first #rescue nil
 		if admin
 		  content_type :html
 		  erb :admin
 		else
-		  redirect to('/login'), 303
+			flash.next[:warning] = '请登录后继续操作...'
+			redirect to('/login'), 303
 		end
 	end
 
@@ -123,12 +130,16 @@ class POSApplication < Sinatra::Base
 
 	get '/cart' do
 		user_id = session[:user_id]
-		redirect to('/entry'), 303 if user_id.nil?
+		if user_id.nil?
+			flash.next[:warning] = '请登录后继续操作...'
+			redirect to('/entry'), 303 
+		end
 		user = User.where("id = ?", user_id).first #rescue nil
 		if user
 			content_type :html
 			erb :cart, locals:{msg:"已登录!"}
 		else
+			flash.next[:warning] = '请登录后继续操作...'
 			redirect to('/entry'), 303
 		end
 	end
@@ -166,23 +177,27 @@ class POSApplication < Sinatra::Base
 		admin_name = params[:adminname]
 		password = params[:password]
 		if admin_name.nil? || admin_name.empty? || password.nil? || password.empty?
-			content_type :html
-			erb :login, locals:{error_text: "用户名和密码不能为空!"}
+			flash.next[:error] = '用户名和密码不能为空, 请重新输入!'
+			redirect '/login'
 		else
 			admin = Administrator.where("name = ? AND password = ?", admin_name, password).first #rescue nil
 			if admin
 				session[:admin_id] = admin.id
-				redirect to('/admin')
+				flash.next[:success] = '管理员登录成功!'
+				redirect '/admin'
 			else
-				content_type :html
-				erb :login, locals:{error_text:"用户名或密码错误!"}
+				flash.next[:error] = '用户名或密码错误, 请重新输入!'
+				redirect '/login'
 			end
 		end
 	end
 
 	get '/order_admin' do
 		admin_id = session[:admin_id]
-		redirect to('/login'), 303 if admin_id.nil?
+		if admin_id.nil?
+			flash.next[:warning] = '请登录后继续操作...'
+			redirect to('/login'), 303
+		end 
 		admin = Administrator.where("id = ?", admin_id).first #rescue nil
 		if admin
 			content_type :html
@@ -193,7 +208,8 @@ class POSApplication < Sinatra::Base
 				erb :order_admin, locals:{orders: orders}
 			end
 		else
-		  redirect to('/login'), 303
+			flash.next[:warning] = '请登录后继续操作...'
+			redirect to('/login'), 303
 		end
 	end
 
@@ -218,16 +234,18 @@ class POSApplication < Sinatra::Base
 		userEmail = params[:user]
 		password = params[:pwd]
 		if userEmail.nil? || userEmail.empty? || password.nil? || password.empty?
-			content_type :html
-			erb :entry, locals:{error_text: "用户名和密码不能为空!"}
+			flash.next[:error] = '用户名和密码不能为空, 请重新输入!'
+			redirect '/entry'
 		else
 			user = User.where("email = ? AND password = ?", userEmail, password).first #rescue nil
 			if user
 				session[:user_id] = user.id
-				redirect to('/')
+				flash.next[:success] = "登录成功! 欢迎回来, #{user.name}!"
+				redirect '/'
 			else
 				content_type :html
-				erb :entry, locals:{error_text:"用户名或密码错误!"}
+				flash.next[:error] = '用户名或密码错误, 请重新输入!'
+				redirect '/entry'
 			end
 		end
 	end
@@ -248,10 +266,12 @@ class POSApplication < Sinatra::Base
 
 			 user.save
 			 content_type :html
-			 redirect to('/'), 303
+ 			flash.next[:success] = '注册成功!'
+			redirect to('/'), 303
 		else
 			content_type :html
-			erb :register, locals:{text:"用户名已被抢注过啦!"}
+			flash.next[:warning] = '用户名已被抢注过啦!'
+			redirect to('register')
 		end
 	end
 
