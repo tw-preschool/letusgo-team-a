@@ -1,11 +1,9 @@
 <% content_for :style_chunk do%>
   <link rel="stylesheet" href="styles/main.css"/>
-<<<<<<< HEAD
-  <script type="text/javascript">
-=======
   <link rel="stylesheet" href="styles/register.css"/>
-<script type="text/javascript">
->>>>>>> two_nav_problem
+  <link rel="stylesheet" href="styles/entry.css"/>
+  <link rel="stylesheet" href="styles/login.css"/>
+  <script type="text/javascript">
   function login()
   {
     document.getElementById("newPwdHidden").value = hex_sha1(document.getElementById("newPwd").value);
@@ -50,43 +48,14 @@
     </div>
 <% end %>
 <!-- 欢迎文字 -->
-<<<<<<< HEAD
-<section id="register">
-  <form action="/register" method="post" role="form" onsubmit="login();">
-    用户名:
-    <input type="text" name="newUser" id="newUser" placeholder="email@example.com"/>
-    <% if(text rescue nil) %>
-      <p>
-        <%= "#{text} 请重新输入!"%>
-      </p>
-    <% end %>
-    <p class="tip1"></p>
-    密码:
-    <input id="newPwdHidden" type="hidden" name="newPwd" value="" />
-    <input type="password" id="newPwd" required placeholder="请输入六位以上"/>
-    <p class="tip3"></p>
-    姓名:
-    <input type="text" name="newName" id="newName" required placeholder="请输入字母或汉字"/>
-    <p class="tip4"></p>
-    地址:
-    <input type="text" name="addr" id="newAddress" required placeholder="请输入默认地址"/>
-    手机号:
-    <input type="text" name="phone" id="newPhone" required placeholder="1XX xxxx xxxx"/>
-    <p class="tip2"></p>
-    <a href="/entry">
-      取消
-    </a>
-    <button type="submit" class="newLogOn">
-      确定
-    </button>
-  </form>
-</section>
-=======
   <div class="container">
     <section id="register">
-      <div class="jumbotron">
+      <div class=" panel panel-success">
+        <div class="panel-heading">
+        <h2 class="form-signin-heading">请登入...</h2>
+      </div>
       <form action="/register" class="form-horizontal" method="post" role="form" onsubmit="login();">
-        <h2 class="form-signin-heading">请登入...</h2><br/>
+        <br/>
         <div class="form-group">
           <label for="newUser" class="col-sm-1 control-label">
             用户名:
@@ -149,19 +118,18 @@
             <p class="tip2"></p>
           </div>
         </div>
-
-        <a href="/entry">
-          取消
-        </a>
-        <button type="submit" class="newLogOn">
-          确定
-        </button>
+        <div class="text-center button-group">
+          <a class="button btn btn-lg btn-warning col-sm-2" href="/entry">
+            取消
+          </a>
+          <button type="submit" class="button newLogOn btn btn-lg btn-success col-sm-2 col-md-offset-1">
+            确定
+          </button>
+        </div>
       </form>
     </div>
     </section>
   </div>
->>>>>>> two_nav_problem
-
 <script type="text/javascript" src="lib/jquery-2.1.1/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="lib/lodash-2.4.1/lodash.compat.js"></script>
