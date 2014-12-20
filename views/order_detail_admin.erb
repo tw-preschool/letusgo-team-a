@@ -50,23 +50,22 @@
     </thead>
     <tbody>
       <% order.products.each do |product| %>
-        <% trade = order.trade_associations.where(product_id:product.id).first %>
-        <% if (trade.amount > 0) %>
+        <% if (product.amount > 0) %>
           <tr>
             <td>
               <%= "#{product.name}" %>
             </td>
             <td>
-              <%= "#{format("%8.2f", trade.unit_price)}".gsub(/\s/, "&nbsp;&nbsp;") %>
+              <%= "#{format("%8.2f", product.unit_price)}".gsub(/\s/, "&nbsp;&nbsp;") %>
             </td>
             <td>
               <%= "#{product.unit}" %>
             </td>
             <td>
-              <%= "#{trade.amount}" %>
+              <%= "#{product.amount}" %>
             </td>
             <td>
-              <%= "#{format("%8.2f", trade.kindred_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %>
+              <%= "#{format("%8.2f", product.kindred_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %>
             </td>
           </tr>
         <% end %>
@@ -87,8 +86,7 @@
       </thead>
       <tbody>
           <% order.promotion_products.each do |product| %>
-            <% promotion = order.promotion_associations.where(product_id:product.id).first %>
-            <% if promotion.discount_amount > 0 %>
+            <% if product.discount_amount > 0 %>
               <tr>
                 <td>
                   买二送一
@@ -97,7 +95,7 @@
                   <%= "#{product.name}" %>
                 </td>
                 <td>
-                  <%= "#{promotion.discount_amount}" %>
+                  <%= "#{product.discount_amount}" %>
                 </td>
               </tr>
             <% end %>

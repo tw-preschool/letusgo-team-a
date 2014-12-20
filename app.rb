@@ -12,8 +12,8 @@ require './models/product'
 require './models/administrator'
 require './models/user'
 require './models/order'
-require './models/trade_association'
-require './models/trade_promotion_association'
+require './models/order_product'
+require './models/order_promotion_product'
 
 class POSApplication < Sinatra::Base
 	configure do

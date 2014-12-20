@@ -3,11 +3,9 @@ require 'json'
 require_relative './product'
 
 class Order < ActiveRecord::Base
-    has_many :trade_associations, class_name: "TradeAssociation", dependent: :destroy
-    has_many :products, through: :trade_associations
+    has_many :products, class_name: "OrderProduct", dependent: :destroy
 
-    has_many :promotion_associations, class_name: "TradePromotionAssociation", dependent: :destroy
-    has_many :promotion_products, through: :promotion_associations, source: :product
+    has_many :promotion_products, class_name: "OrderPromotionProduct", dependent: :destroy
 
     after_initialize :init
 
@@ -79,18 +77,17 @@ class Order < ActiveRecord::Base
 
     def save
         @product_list.each do |product|
-            next if self.products.include? product
-            self.products.push product 
-            self.trade_associations.last.kindred_price = product.kindred_price
-            self.trade_associations.last.amount = product.amount
-            self.trade_associations.last.unit_price = product.price
-            self.trade_associations.last.is_promotion = product.promotion
+            self.products << OrderProduct.new( name: product.name,
+                kindred_price: product.kindred_price,
+                amount: product.amount,
+                unit: product.unit,
+                unit_price: product.price,
+                is_promotion: product.promotion )
         end
         @discount_list.each do |product|
-            next if self.promotion_products.include? product
-            self.promotion_products.push product
-            self.promotion_associations.last.discount_amount = product.discount_amount
-            self.promotion_associations.last.discount_price = product.discount_amount * product.price
+            self.promotion_products << OrderPromotionProduct.new( name: product.name,
+                discount_amount: product.discount_amount,
+                discount_price: product.discount_amount * product.price )
         end
         super
     end

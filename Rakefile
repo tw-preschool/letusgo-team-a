@@ -5,12 +5,12 @@ require 'active_record'
 require 'logger'
 require 'yaml'
 
-desc "Migrate the database through scripts in db/."
+desc "Migrate the database through scripts in db/migrate/."
 task :migrate => :environment do
-    ActiveRecord::Migrator.migrate('db/', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+    ActiveRecord::Migrator.migrate('db/migrate/', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
 end
 
-desc "Create an empty migration in db/migrate, e.g., rake generate:migration NAME=create_tasks"
+desc "Create an empty migration in db/migrate/ e.g., rake generate:migration NAME=create_tasks"
 task :migration do
   unless ENV.has_key?('NAME')
     raise "Must specificy migration name, e.g., rake generate:migration NAME=create_tasks"
@@ -18,7 +18,7 @@ task :migration do
 
   name     = ENV['NAME'].camelize
   filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), ENV['NAME'].underscore]
-  path     = File.join('db', filename)
+  path     = File.join('db/migrate', filename)
 
   if File.exist?(path)
     raise "ERROR: File '#{path}' already exists"
