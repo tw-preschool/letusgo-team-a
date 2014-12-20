@@ -214,14 +214,19 @@ class POSApplication < Sinatra::Base
 	end
 
 	post '/payment' do
-		cart_data = JSON.parse params[:cart_data]
-		order = Order.new
-		order.init_with_data cart_data
-		order.update_price
-		order.save
-		# puts Order.last.products.to_json
-		content_type :html
-		erb :payment, locals:{order: order}
+		begin
+			cart_data = JSON.parse params[:cart_data]
+			order = Order.new
+			order.init_with_data cart_data
+			order.update_price
+			order.save
+			content_type :html
+			erb :payment, locals:{order: order}
+			# puts Order.last.products.to_json
+		rescue
+			flash.next[:error] = '抱歉，购买出错了！请重新购买！'
+			redirect '/cart'
+		end
 	end
 
 	get '/entry' do

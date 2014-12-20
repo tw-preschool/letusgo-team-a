@@ -21,12 +21,12 @@ class Order < ActiveRecord::Base
 			raise "initial data error" unless id.to_i.to_s == id.to_s && count.to_i.to_s == count.to_s
 			raise "product count error" unless count.to_i >= 0
 			next if count.to_i == 0
-			db_item = Product.where(id: id).first
-			if db_item
-				db_item.amount = count
-				db_item.kindred_price = 0.0
-				db_item.discount_amount = 0;
-				@product_list.push db_item
+			product = Product.where(id: id).first
+			if product && product.stock >= count.to_i
+				product.amount = count
+				product.kindred_price = 0.0
+				product.discount_amount = 0;
+				@product_list.push product
 			else
 				raise "product id error"
 			end
@@ -36,25 +36,6 @@ class Order < ActiveRecord::Base
 	def select_item item_name
 		select_items = @product_list.select {|item| item.name === item_name}
 		select_items.first
-	end
-
-	def add_item_count item_name, amount
-		raise "product count error" if amount <= 0
-
-		if amount > 0 && !item_name.empty?
-			db_item = Product.where(name: item_name).first
-			if db_item
-				new_item = @product_list.select{|item| item.name === item_name}.first
-				if new_item
-					new_item.amount += amount
-				else
-					db_item.amount = amount
-					db_item.kindred_price = 0.0
-					db_item.discount_amount = 0
-					@product_list.push db_item
-				end
-			end
-		end
 	end
 
 	def update_price

@@ -137,9 +137,14 @@ function ShoppingCart( cartStorage ) {
 
 	function updateCartCount() {
 		cartCount = 0;
-		$.each( itemList, function ( index, item ) {
-			cartCount += item.count;
+		$.each( cartStorage.getAllItemCounts(), function ( id, count ) {
+			var item = _.find( itemList, function ( item ) {return item.id == id;} );
+			if(item != null)
+				cartCount += item.count;
+			else
+				cartStorage.setItemWithCount(id, 0);
 		} );
+
 		$( '#count' ).text( cartCount );
 		sessionStorage.count = cartCount;
 	}

@@ -74,28 +74,6 @@ describe 'Order model' do
         end
     end
 
-
-    describe 'add item count method' do
-        before :each do
-            cart_data = {@sample_item_apple.id.to_s => 3}
-            @order = Order.new()
-            @order.init_with_data cart_data
-        end
-
-        it 'should get correct item count when giving a reasonable item name and additional count' do
-            @order.add_item_count @sample_item_apple.name, 3
-            expect(@order.product_list.first.amount).to eq(6)
-        end
-
-        it 'should do nothing when giving a unexist item name' do
-            @order.add_item_count 'iPhone 6', 3
-            expect(@order.product_list.first.amount).to eq(3)
-        end
-        it 'should raise error when giving a wrong additional count' do
-            expect{@order.add_item_count @sample_item_apple.name, -1}.to raise_error
-        end
-    end
-
     describe 'update price method' do
         it 'should given a correct sum price and discount price when given 1 apple and 1 coke' do
             cart_data = {@sample_item_apple.id.to_s => 1, @sample_item_coke.id.to_s => 1}

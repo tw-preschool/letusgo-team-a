@@ -19,8 +19,10 @@ var cartStorage = (function() {
         },
         setItemWithCount: function(key, count){
             var allItemCounts = this.getAllItemCounts();
-
-            allItemCounts[key] = count;
+            if(parseInt(count) <= 0)
+                allItemCounts[key] = undefined;
+            else
+                allItemCounts[key] = count;
 
             sessionStorage.setItem("itemCount", JSON.stringify(allItemCounts));
         },
