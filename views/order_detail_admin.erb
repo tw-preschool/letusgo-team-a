@@ -33,7 +33,7 @@
 <% end %>
 
 <!-- 页面主体 -->
-<div class="order-id"><%= "订单编号 : ##{format("%012d", order.id)}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
+<div class="order-id"><%= "订单编号 : ##{order.order_id}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="order-time"><%= "订单时间 : #{order.created_at}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="panel panel-success">
   <div class="panel-heading"><h4>购物清单</h4></div>

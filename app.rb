@@ -202,7 +202,7 @@ class POSApplication < Sinatra::Base
 		if admin
 			content_type :html
 			if(params["id"])
-				erb :order_detail_admin, locals:{order:Order.where(id:params["id"].to_i).first}
+				erb :order_detail_admin, locals:{order:Order.where(order_id:params["id"]).first}
 			else
 				orders = Order.find(:all, :order => "created_at DESC") rescue ActiveRecord::RecordNotFound
 				erb :order_admin, locals:{orders: orders}
