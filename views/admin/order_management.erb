@@ -20,14 +20,14 @@
     <li>
       <a href="/items">商品列表</a>
     </li>
-    <li class="active"><a href="/order_admin">订单管理</a></li>
+    <li class="active"><a href="/admin/order_management">订单管理</a></li>
   </ul>
   <ul class="navbar-nav nav navbar-right">
     <li>
       <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
     </li>
     <li>
-      <a href="/admin">管理</a>
+      <a href="/admin/product_management">管理</a>
     </li>
   </ul>
 </div>
@@ -60,7 +60,7 @@
           <%= "#{order.sum_price}" %>
         </td>
         <td>
-          <a <%= "href=\'/order_admin?id=#{order.order_id}\'"%>>订单详情</a>
+          <a <%= "href=\'/admin/order_management?id=#{order.order_id}\'"%>>订单详情</a>
         </td>
       </tr>
       <% end %>

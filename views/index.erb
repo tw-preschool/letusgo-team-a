@@ -26,7 +26,7 @@
           <% if(msg rescue nil)
                href = ""
                if("#{msg}" == "登录")
-                 href = "/entry"
+                 href = "/login"
                else
                 href = "/"
                end %>
@@ -34,13 +34,13 @@
           <% end %>
         </li>
         <li>
-          <a href="/entry" onclick="return state();">注销</a>
+          <a href="/login" onclick="return state();">注销</a>
         </li>
         <li>
           <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
         </li>
         <li>
-          <a href="/admin">管理</a>
+          <a href="/admin/product_management">管理</a>
         </li>
       </ul>
     </div>

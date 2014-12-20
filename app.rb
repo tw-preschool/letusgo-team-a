@@ -92,29 +92,29 @@ class POSApplication < Sinatra::Base
 			:detail => params[:productDetail])
 
 		product.save
-		redirect to('/admin'), 303
+		redirect to('/admin/product_management'), 303
 	end
 
-	get '/admin' do
+	get '/admin/product_management' do
 		admin_id = session[:admin_id]
 		if admin_id.nil?
 			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/login'), 303
+			redirect to('/admin/login'), 303
 		end 
 		admin = Administrator.where("id = ?", admin_id).first #rescue nil
 		if admin
 		  content_type :html
-		  erb :admin
+		  erb :'admin/product_management'
 		else
 			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/login'), 303
+			redirect to('/admin/login'), 303
 		end
 	end
 
-	get '/login' do
+	get '/admin/login' do
 		@error_text = nil
 		content_type :html
-		erb :login
+		erb :'admin/login'
 	end
 
 	get '/items' do
@@ -132,7 +132,7 @@ class POSApplication < Sinatra::Base
 		user_id = session[:user_id]
 		if user_id.nil?
 			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/entry'), 303 
+			redirect to('/login'), 303 
 		end
 		user = User.where("id = ?", user_id).first #rescue nil
 		if user
@@ -140,7 +140,7 @@ class POSApplication < Sinatra::Base
 			erb :cart, locals:{msg:"已登录!"}
 		else
 			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/entry'), 303
+			redirect to('/login'), 303
 		end
 	end
 
@@ -154,13 +154,13 @@ class POSApplication < Sinatra::Base
 			:detail => params[:productDetail]
 		}
 		product.save
-		redirect to('/admin'), 303
+		redirect to('/admin/product_management'), 303
 	end
 
 	get '/delete/:id' do
 		product = Product.find(params[:id])
 		product.destroy
-		redirect to('/admin'), 303
+		redirect to('/admin/product_management'), 303
 	end
 
 	put '/products' do
@@ -173,43 +173,43 @@ class POSApplication < Sinatra::Base
 		end
 	end
 
-	post '/login' do
+	post '/admin/login' do
 		admin_name = params[:adminname]
 		password = params[:password]
 		if admin_name.nil? || admin_name.empty? || password.nil? || password.empty?
 			flash.next[:error] = '用户名和密码不能为空, 请重新输入!'
-			redirect '/login'
+			redirect '/admin/login'
 		else
 			admin = Administrator.where("name = ? AND password = ?", admin_name, password).first #rescue nil
 			if admin
 				session[:admin_id] = admin.id
 				flash.next[:success] = '管理员登录成功!'
-				redirect '/admin'
+				redirect '/admin/product_management'
 			else
 				flash.next[:error] = '用户名或密码错误, 请重新输入!'
-				redirect '/login'
+				redirect '/admin/login'
 			end
 		end
 	end
 
-	get '/order_admin' do
+	get '/admin/order_management' do
 		admin_id = session[:admin_id]
 		if admin_id.nil?
 			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/login'), 303
+			redirect to('/admin/login'), 303
 		end 
 		admin = Administrator.where("id = ?", admin_id).first #rescue nil
 		if admin
 			content_type :html
 			if(params["id"])
-				erb :order_detail_admin, locals:{order:Order.where(order_id:params["id"]).first}
+				erb :'admin/order_detail', locals:{order:Order.where(order_id:params["id"]).first}
 			else
 				orders = Order.find(:all, :order => "created_at DESC") rescue ActiveRecord::RecordNotFound
-				erb :order_admin, locals:{orders: orders}
+				erb :'admin/order_management', locals:{orders: orders}
 			end
 		else
 			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/login'), 303
+			redirect to('/admin/login'), 303
 		end
 	end
 
@@ -229,18 +229,18 @@ class POSApplication < Sinatra::Base
 		end
 	end
 
-	get '/entry' do
+	get '/login' do
 	  session[:user_id] = nil
 	  content_type :html
-	  erb :entry
+	  erb :login
 	end
 
-	post '/entry' do
+	post '/login' do
 		userEmail = params[:user]
 		password = params[:pwd]
 		if userEmail.nil? || userEmail.empty? || password.nil? || password.empty?
 			flash.next[:error] = '用户名和密码不能为空, 请重新输入!'
-			redirect '/entry'
+			redirect '/login'
 		else
 			user = User.where("email = ? AND password = ?", userEmail, password).first #rescue nil
 			if user
@@ -250,7 +250,7 @@ class POSApplication < Sinatra::Base
 			else
 				content_type :html
 				flash.next[:error] = '用户名或密码错误, 请重新输入!'
-				redirect '/entry'
+				redirect '/login'
 			end
 		end
 	end

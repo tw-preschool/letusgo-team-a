@@ -15,15 +15,15 @@ feature 'Pos Login Page' do
     end
 
     scenario 'should go to admin page as authorized administrator when an unauthorized visitor submit correct login request (admin/admin)', :js => true do
-        visit '/login'
+        visit '/admin/login'
         fill_in 'adminname', :with => 'admin'
         fill_in 'form_pass', :with => 'admin'
         click_on '登入'
-        expect(current_url).to end_with('/admin')
+        expect(current_url).to end_with('/admin/product_management')
     end
 
     scenario 'stay in login page with alert info when an unauthorized visitor submit incorrect login request', :js => true do
-        visit '/login'
+        visit '/admin/login'
         fill_in 'adminname', :with => 'admin'
         fill_in 'form_pass', :with => 'wrongpassword'
         click_on '登入'
@@ -35,6 +35,6 @@ feature 'Pos Login Page' do
         page.set_rack_session admin_id: admin.id
         visit '/'
         click_on '管理'
-        expect(current_url).to end_with('/admin')
+        expect(current_url).to end_with('/admin/product_management')
     end
 end
