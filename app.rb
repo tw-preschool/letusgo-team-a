@@ -94,19 +94,13 @@ class POSApplication < Sinatra::Base
 	end
 
 	get '/admin/product_management' do
-		if get_session :admin
-			content_type :html
-			erb :'admin/product_management'
-		else
-			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/admin/login'), 303
-		end
-	end
-
-	get '/admin/login' do
-		@error_text = nil
 		content_type :html
-		erb :'admin/login'
+		return erb :'admin/product_management' if get_session :admin
+		if get_session :user
+			session[:user_id] = nil
+		end
+		flash.next[:warning] = '请登录后台并继续操作...' + request.referer.to_s
+		redirect to('/login'), 303
 	end
 
 	get '/items' do
@@ -157,25 +151,6 @@ class POSApplication < Sinatra::Base
 		end
 	end
 
-	post '/admin/login' do
-		admin_name = params[:adminname]
-		password = params[:password]
-		if admin_name.nil? || admin_name.empty? || password.nil? || password.empty?
-			flash.next[:error] = '用户名和密码不能为空, 请重新输入!'
-			redirect '/admin/login'
-		else
-			admin = Administrator.where("name = ? AND password = ?", admin_name, password).first #rescue nil
-			if admin
-				session[:admin_id] = admin.id
-				flash.next[:success] = '管理员登录成功!'
-				redirect '/admin/product_management'
-			else
-				flash.next[:error] = '用户名或密码错误, 请重新输入!'
-				redirect '/admin/login'
-			end
-		end
-	end
-
 	get '/admin/order_management' do
 		if get_session :admin
 			content_type :html
@@ -186,8 +161,11 @@ class POSApplication < Sinatra::Base
 				erb :'admin/order_management', locals:{orders: orders}
 			end
 		else
-			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/admin/login'), 303
+			if get_session :user
+				session[:user_id] = nil
+			end
+			flash.next[:warning] = '请登录后台并继续操作...'
+			redirect to('/login'), 303
 		end
 	end
 
@@ -218,19 +196,23 @@ class POSApplication < Sinatra::Base
 		password = params[:pwd]
 		if userEmail.nil? || userEmail.empty? || password.nil? || password.empty?
 			flash.next[:error] = '用户名和密码不能为空, 请重新输入!'
-			redirect '/login'
-		else
-			user = User.where("email = ? AND password = ?", userEmail, password).first #rescue nil
-			if user
-				session[:user_id] = user.id
-				flash.next[:success] = "登录成功! 欢迎回来, #{user.name}!"
-				redirect '/'
-			else
-				content_type :html
-				flash.next[:error] = '用户名或密码错误, 请重新输入!'
-				redirect '/login'
-			end
+			return redirect '/login'
 		end
+		admin = Administrator.where("name = ? AND password = ?", userEmail, password).first #rescue nil
+		if admin
+			session[:admin_id] = admin.id
+			flash.next[:success] = '管理员登录成功!'
+			return redirect '/admin/product_management'
+		end
+		user = User.where("email = ? AND password = ?", userEmail, password).first #rescue nil
+		if user
+			session[:user_id] = user.id
+			flash.next[:success] = "登录成功! 欢迎回来, #{user.name}!"
+			return redirect '/'
+		end
+		content_type :html
+		flash.next[:error] = '用户名或密码错误, 请重新输入!'
+		redirect '/login'
 	end
 
 	get '/register' do
