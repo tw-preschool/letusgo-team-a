@@ -43,9 +43,7 @@ class POSApplication < Sinatra::Base
 
 	get '/' do
 		content_type :html
-		user_id = session[:user_id]
-		user = User.where("id = ?", user_id).first #rescue nil
-		if user
+		if get_session :user
 			erb :index, locals:{msg:"已登录!"}
 		else
 			erb :index, locals:{msg:"登录"}
@@ -96,15 +94,9 @@ class POSApplication < Sinatra::Base
 	end
 
 	get '/admin/product_management' do
-		admin_id = session[:admin_id]
-		if admin_id.nil?
-			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/admin/login'), 303
-		end 
-		admin = Administrator.where("id = ?", admin_id).first #rescue nil
-		if admin
-		  content_type :html
-		  erb :'admin/product_management'
+		if get_session :admin
+			content_type :html
+			erb :'admin/product_management'
 		else
 			flash.next[:warning] = '请登录后继续操作...'
 			redirect to('/admin/login'), 303
@@ -119,9 +111,7 @@ class POSApplication < Sinatra::Base
 
 	get '/items' do
 		content_type :html
-		user_id = session[:user_id]
-		user = User.where("id = ?", user_id).first #rescue nil
-		if user
+		if get_session :user
 		  erb :items, locals:{msg:"已登录!"}
 		else
 		  erb :items, locals:{msg:"登录"}
@@ -129,13 +119,7 @@ class POSApplication < Sinatra::Base
 	end
 
 	get '/cart' do
-		user_id = session[:user_id]
-		if user_id.nil?
-			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/login'), 303 
-		end
-		user = User.where("id = ?", user_id).first #rescue nil
-		if user
+		if get_session :user
 			content_type :html
 			erb :cart, locals:{msg:"已登录!"}
 		else
@@ -193,13 +177,7 @@ class POSApplication < Sinatra::Base
 	end
 
 	get '/admin/order_management' do
-		admin_id = session[:admin_id]
-		if admin_id.nil?
-			flash.next[:warning] = '请登录后继续操作...'
-			redirect to('/admin/login'), 303
-		end 
-		admin = Administrator.where("id = ?", admin_id).first #rescue nil
-		if admin
+		if get_session :admin
 			content_type :html
 			if(params["id"])
 				erb :'admin/order_detail', locals:{order:Order.where(order_id:params["id"]).first}
@@ -282,5 +260,24 @@ class POSApplication < Sinatra::Base
 
 	after do
 		ActiveRecord::Base.connection.close
+	end
+
+	def get_session role
+		user_id = nil
+		user = nil
+
+		case role
+			when :user then
+				user_id = session[:user_id]
+				user = User.where("id = ?", user_id).first rescue nil
+			when :admin
+				user_id = session[:admin_id]
+				user = Administrator.where("id = ?", user_id).first rescue nil
+			else
+				user_id = nil
+				user = nil
+		end
+
+		return user
 	end
 end
