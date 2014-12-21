@@ -52,7 +52,7 @@ class POSApplication < Sinatra::Base
 
 	get '/products' do
 		begin
-			products = Product.all || []
+			products = Product.where(is_deleted: false)
 			products.to_json
 		rescue ActiveRecord::RecordNotFound => e
 			[404, {:message => e.message}.to_json]
@@ -65,9 +65,9 @@ class POSApplication < Sinatra::Base
 		raise "query input error" unless item_id_list && item_id_list.is_a?(Array)
 		item_id_list.each do |id|
 			begin
-				item_list.push Product.find(id)
+				item_list.push Product.where("id = ? AND is_deleted = ?", id, false).first
 			rescue ActiveRecord::RecordNotFound => e
-				puts e.message.to_s 
+				puts e.message.to_s
 			end
 		end
 		item_list.to_json
@@ -75,7 +75,7 @@ class POSApplication < Sinatra::Base
 
 	get '/products/:id' do
 		begin
-			product = Product.find(params[:id])
+			product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
 			product.to_json
 		rescue  ActiveRecord::RecordNotFound => e
 			[404, {:message => e.message}.to_json]
@@ -95,11 +95,12 @@ class POSApplication < Sinatra::Base
 
 	get '/admin/product_management' do
 		content_type :html
-		return erb :'admin/product_management' if get_session :admin
+		products = Product.where(is_deleted: false)
+		return erb :'admin/product_management', locals:{products:products} if get_session :admin
 		if get_session :user
 			session[:user_id] = nil
 		end
-		flash.next[:warning] = '请登录后台并继续操作...' + request.referer.to_s
+		flash.next[:warning] = '请登录后台并继续操作...'
 		redirect to('/login'), 303
 	end
 
@@ -123,7 +124,7 @@ class POSApplication < Sinatra::Base
 	end
 
 	post '/edit/:id' do
-		product = Product.find(params[:id])
+		product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
 		product.attributes ={
 			:name => params[:productName],
 			:price => params[:productPrice],
@@ -136,13 +137,14 @@ class POSApplication < Sinatra::Base
 	end
 
 	get '/delete/:id' do
-		product = Product.find(params[:id])
-		product.destroy
+		product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
+		product.is_deleted = true
+		product.save
 		redirect to('/admin/product_management'), 303
 	end
 
 	put '/products' do
-		product = Product.find(params[:id])
+		product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
 		product.promotion = params[:promotion]
 		if product.save
 			[201, {:message => "update success!"}.to_json]
@@ -157,7 +159,7 @@ class POSApplication < Sinatra::Base
 			if(params["id"])
 				erb :'admin/order_detail', locals:{order:Order.where(order_id:params["id"]).first}
 			else
-				orders = Order.find(:all, :order => "created_at DESC") rescue ActiveRecord::RecordNotFound
+				orders = Order.order("created_at DESC") rescue ActiveRecord::RecordNotFound
 				erb :'admin/order_management', locals:{orders: orders}
 			end
 		else
