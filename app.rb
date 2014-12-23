@@ -8,12 +8,7 @@ require 'sinatra/flash'
 require 'active_record'
 require 'json'
 
-require './models/product'
-require './models/administrator'
-require './models/user'
-require './models/order'
-require './models/order_product'
-require './models/order_promotion_product'
+Dir["./models/*.rb"].each {|file| require file }
 
 class POSApplication < Sinatra::Base
 	configure do
@@ -43,16 +38,18 @@ class POSApplication < Sinatra::Base
 
 	get '/' do
 		content_type :html
-		if get_session :user
-			erb :index, locals:{msg:"已登录!"}
+		if (admin = get_session :admin)
+			erb :index, locals:{admin: admin}
+		elsif (user = get_session :user)
+			erb :index, locals:{user: user}
 		else
-			erb :index, locals:{msg:"登录"}
+			erb :index
 		end
 	end
 
 	get '/products' do
 		begin
-			products = Product.where(is_deleted: false)
+			products = Product.get_all
 			products.to_json
 		rescue ActiveRecord::RecordNotFound => e
 			[404, {:message => e.message}.to_json]
@@ -65,7 +62,7 @@ class POSApplication < Sinatra::Base
 		raise "query input error" unless item_id_list && item_id_list.is_a?(Array)
 		item_id_list.each do |id|
 			begin
-				item_list.push Product.where("id = ? AND is_deleted = ?", id, false).first
+				item_list.push Product.find_by_id(id)
 			rescue ActiveRecord::RecordNotFound => e
 				puts e.message.to_s
 			end
@@ -75,7 +72,7 @@ class POSApplication < Sinatra::Base
 
 	get '/products/:id' do
 		begin
-			product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
+			product = Product.find_by_id params[:id]
 			product.to_json
 		rescue  ActiveRecord::RecordNotFound => e
 			[404, {:message => e.message}.to_json]
@@ -95,105 +92,135 @@ class POSApplication < Sinatra::Base
 
 	get '/admin/product_management' do
 		content_type :html
-		products = Product.where(is_deleted: false)
-		return erb :'admin/product_management', locals:{products:products} if get_session :admin
-		if get_session :user
+		products = Product.get_all
+		if (admin = get_session :admin)
+			return erb :'admin/product_management', locals:{products:products, admin: admin} 
+		else
 			session[:user_id] = nil
+			flash.next[:warning] = '请登录后台并继续操作...'
+			redirect to('/login'), 303
 		end
-		flash.next[:warning] = '请登录后台并继续操作...'
-		redirect to('/login'), 303
 	end
 
 	get '/items' do
 		content_type :html
-		if get_session :user
-		  erb :items, locals:{msg:"已登录!"}
+		if (user = get_session :user)
+		  erb :items, locals:{user: user}
 		else
-		  erb :items, locals:{msg:"登录"}
+		  erb :items
 		end
 	end
 
 	get '/cart' do
-		if get_session :user
+		if (user = get_session :user)
 			content_type :html
-			erb :cart, locals:{msg:"已登录!"}
+			erb :cart, locals:{user: user}
 		else
 			flash.next[:warning] = '请登录后继续操作...'
 			redirect to('/login'), 303
 		end
 	end
 
+	get '/cart/cart_data' do
+		content_type :json
+		if user = get_session(:user)
+			return user.shopping_cart.get_cart_data.to_json
+		else
+			return {}.to_json
+		end
+	end
+
+	post '/cart/cart_data' do
+		cart_data = JSON.parse params[:cart_data]
+		if (user = get_session(:user))
+			user.shopping_cart.update_with cart_data
+			return user.shopping_cart.get_cart_data.to_json
+		else
+			return [404, "Error: no user info."]
+		end
+	end
+
 	post '/edit/:id' do
-		product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
-		product.attributes ={
-			:name => params[:productName],
-			:price => params[:productPrice],
-			:unit => params[:productUnits],
-			:stock => params[:productStock],
-			:detail => params[:productDetail]
-		}
-		product.save
-		redirect to('/admin/product_management'), 303
+		if (admin = get_session(:admin))
+			product = Product.find_by_id params[:id]
+			product.attributes ={
+				:name => params[:productName],
+				:price => params[:productPrice],
+				:unit => params[:productUnits],
+				:stock => params[:productStock],
+				:detail => params[:productDetail]
+			}
+			product.save
+			redirect to('/admin/product_management'), 303
+		end
 	end
 
 	get '/delete/:id' do
-		product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
-		product.is_deleted = true
-		product.save
-		redirect to('/admin/product_management'), 303
+		if (admin = get_session(:admin))
+			product = Product.find_by_id params[:id]
+			product.is_deleted = true
+			product.save
+			redirect to('/admin/product_management'), 303
+		end
 	end
 
 	put '/products' do
-		product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
-		product.promotion = params[:promotion]
-		if product.save
-			[201, {:message => "update success!"}.to_json]
-		else
-			halt 500, {:message => "update failed!"}.to_json
+		if (admin = get_session(:admin))
+			product = Product.find_by_id params[:id]
+			product.promotion = params[:promotion]
+			if product.save
+				[201, {:message => "update success!"}.to_json]
+			else
+				halt 500, {:message => "update failed!"}.to_json
+			end
 		end
 	end
 
 	get '/admin/order_management' do
-		if get_session :admin
+		if ( admin = get_session :admin )
 			content_type :html
 			if(params["id"])
-				erb :'admin/order_detail', locals:{order:Order.where(order_id:params["id"]).first}
+				erb :'admin/order_detail', locals:{order:Order.where(order_id:params["id"]).first, admin: admin}
 			else
 				orders = Order.order("created_at DESC") rescue ActiveRecord::RecordNotFound
-				erb :'admin/order_management', locals:{orders: orders}
+				erb :'admin/order_management', locals:{orders: orders, admin: admin}
 			end
 		else
-			if get_session :user
-				session[:user_id] = nil
-			end
+			session[:user_id] = nil
 			flash.next[:warning] = '请登录后台并继续操作...'
 			redirect to('/login'), 303
 		end
 	end
 
 	post '/payment' do
-		begin
-			cart_data = JSON.parse params[:cart_data]
-			order = Order.new
-			order.init_with_data cart_data
-			order.update_price
-			order.save
-			content_type :html
-			erb :payment, locals:{order: order}
-			# puts Order.last.products.to_json
-		rescue
-			flash.next[:error] = '抱歉，购买出错了！请重新购买！'
-			redirect '/cart'
+		if user = get_session(:user)
+			begin
+				cart_data = JSON.parse params[:cart_data]
+				order = Order.new
+				order.init_with_data cart_data
+				order.update_price
+				order.save
+				content_type :html
+				erb :payment, locals:{order: order, user: user}
+				# puts Order.last.products.to_json
+			rescue
+				puts e.to_json
+				flash.next[:error] = '抱歉，购买出错了！请重新购买！'
+				redirect '/cart'
+			end
 		end
 	end
 
 	get '/login' do
-	  session[:user_id] = nil
-	  content_type :html
-	  erb :login
+		session[:user_id] = nil
+		session[:admin_id] = nil
+		content_type :html
+		erb :login
 	end
 
 	post '/login' do
+		session[:user_id] = nil
+		session[:admin_id] = nil
 		userEmail = params[:user]
 		password = params[:pwd]
 		if userEmail.nil? || userEmail.empty? || password.nil? || password.empty?
@@ -217,12 +244,20 @@ class POSApplication < Sinatra::Base
 		redirect '/login'
 	end
 
+	get '/logout' do
+		session[:user_id] = nil
+		session[:admin_id] = nil
+		redirect '/'
+	end
+
 	get '/register' do
 		content_type :html
 		erb :register
 	end
 
 	post '/register' do
+		session[:user_id] = nil
+		session[:admin_id] = nil
 		oldUser = User.where("email = ?", params[:newUser]).first #rescue nil
 		if oldUser.nil?
 			 user = User.create(:email => params[:newUser],

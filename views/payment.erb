@@ -1,117 +1,92 @@
 <% content_for :style_chunk do%>
-    <link rel="stylesheet" href="../styles/main.css"/>
+<link rel="stylesheet" href="../styles/main.css"/>
 <% end %>
-<% content_for :nav_lis do%>
-<div class="navbar-header">
-  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-    <span class="sr-only">切换导航</span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </button>
-  <a href="/items" class="navbar-brand">Let's Go</a>
-</div>
-<div class="navbar-collapse collapse">
-  <ul class="nav navbar-nav">
-    <li>
-      <a href="/">主页</a>
-    </li>
-    <li>
-      <a href="/items">商品列表</a>
-    </li>
-  </ul>
-  <ul class="navbar-nav nav navbar-right">
-    <li>
-      <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
-    </li>
-    <li>
-      <a href="/admin/product_management">管理</a>
-    </li>
-  </ul>
-</div>
-<% end %>
-
 <!-- 页面主体 -->
 <div class="order-id"><%= "订单编号 : ##{order.order_id}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="order-time"><%= "订单时间 : #{order.created_at}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="panel panel-success">
-  <div class="panel-heading"><h4>购物清单</h4></div>
-  <div id="pay-date"></div>
-  <table class="table table-bordered table-hover table-responsive">
-    <thead>
-      <tr>
-        <th>名称</th>
-        <th>单价(元)</th>
-        <th>单位</th>
-        <th>数量</th>
-        <th>小计</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% order.products.each do |product| %>
-        <% if (product.amount > 0) %>
-          <tr>
-            <td>
-              <%= "#{product.name}" %>
-            </td>
-            <td>
-              <%= "#{format("%8.2f", product.unit_price)}".gsub(/\s/, "&nbsp;&nbsp;") %>
-            </td>
-            <td>
-              <%= "#{product.unit}" %>
-            </td>
-            <td>
-              <%= "#{product.amount}" %>
-            </td>
-            <td>
-              <%= "#{format("%8.2f", product.kindred_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %>
-            </td>
-          </tr>
-        <% end %>
-      <% end %>
-    </tbody>
-    <tfoot>
-    </tfoot>
-  </table>
-  <% if order.sum_discount > 0 %>
-    <div class="panel-heading"><h4>优惠商品</h4></div>
-    <table class="table table-bordered table-hover table-responsive">
-      <thead>
-        <tr>
-          <th>分类</th>
-          <th>名称</th>
-          <th>数量</th>
-        </tr>
-      </thead>
-      <tbody>
-          <% order.promotion_products.each do |product| %>
-            <% promotion = order.promotion_associations.where(product_id:product.id).first %>
-            <% if promotion.discount_amount > 0 %>
-              <tr>
-                <td>
-                  买二送一
-                </td>
-                <td>
-                  <%= "#{product.name}" %>
-                </td>
-                <td>
-                  <%= "#{promotion.discount_amount}" %>
-                </td>
-              </tr>
-            <% end %>
-          <% end %>
-      </tbody>
-    </table>
-  <% end %>
-  <table class="table table-bordered table-hover table-responsive">
-    <tfoot>
-      <td colspan="3">
-        <ul class="list-unstyled order-sum-row">
-          <li class="text-right"><p><%= "订单金额：#{format("%10.2f", order.sum_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
-          <li class="text-right"><p><%= "折扣金额：#{format("%10.2f", order.sum_discount)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
-          <li class="text-right"><a href="/items" class="btn btn-success">确认</a></li>
-        </ul>
-      </td>
-    </tfoot>
-  </table>
+	<div class="panel-heading"><h4>购物清单</h4></div>
+	<div id="pay-date"></div>
+	<table class="table table-bordered table-hover table-responsive">
+		<thead>
+			<tr>
+				<th>名称</th>
+				<th>单价(元)</th>
+				<th>单位</th>
+				<th>数量</th>
+				<th>小计</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% order.products.each do |product| %>
+			<% if (product.amount > 0) %>
+			<tr>
+				<td>
+					<%= "#{product.name}" %>
+				</td>
+				<td>
+					<%= "#{format("%8.2f", product.unit_price)}".gsub(/\s/, "&nbsp;&nbsp;") %>
+				</td>
+				<td>
+					<%= "#{product.unit}" %>
+				</td>
+				<td>
+					<%= "#{product.amount}" %>
+				</td>
+				<td>
+					<%= "#{format("%8.2f", product.kindred_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %>
+				</td>
+			</tr>
+			<% end %>
+			<% end %>
+		</tbody>
+		<tfoot>
+		</tfoot>
+	</table>
+	<% if order.sum_discount > 0 %>
+	<div class="panel-heading"><h4>优惠商品</h4></div>
+	<table class="table table-bordered table-hover table-responsive">
+		<thead>
+			<tr>
+				<th>分类</th>
+				<th>名称</th>
+				<th>数量</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% order.promotion_products.each do |product| %>
+			<% promotion = order.promotion_associations.where(product_id:product.id).first %>
+			<% if promotion.discount_amount > 0 %>
+			<tr>
+				<td>
+					买二送一
+				</td>
+				<td>
+					<%= "#{product.name}" %>
+				</td>
+				<td>
+					<%= "#{promotion.discount_amount}" %>
+				</td>
+			</tr>
+			<% end %>
+			<% end %>
+		</tbody>
+	</table>
+	<% end %>
+	<table class="table table-bordered table-hover table-responsive">
+		<tfoot>
+		<td colspan="3">
+			<ul class="list-unstyled order-sum-row">
+				<li class="text-right"><p><%= "订单金额：#{format("%10.2f", order.sum_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
+				<li class="text-right"><p><%= "折扣金额：#{format("%10.2f", order.sum_discount)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
+				<li class="text-right"><a href="/items" class="btn btn-success">确认</a></li>
+			</ul>
+		</td>
+		</tfoot>
+	</table>
 </div>
+<% content_for :script_lis do %>
+<script type="text/javascript" src="../scripts/model/item.js"></script>
+<script type="text/javascript" src="../scripts/storage/cart_storage.js"></script>
+<script type="text/javascript" src="../scripts/model/cart.js"></script>
+<% end %>

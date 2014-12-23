@@ -1,76 +1,29 @@
 <% content_for :style_chunk do%>
-  <link rel="stylesheet" href="../styles/main.css"/>
-  <link rel="stylesheet" href="../styles/admin.css"/>
+<link rel="stylesheet" href="../styles/main.css"/>
+<link rel="stylesheet" href="../styles/admin.css"/>
 <% end %>
-  <!-- 导航栏 -->
-  <% content_for :nav_lis do%>
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">切换导航</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a href="/items" class="navbar-brand">Let's Go</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li>
-            <a href="/">主页</a>
-          </li>
-          <li class="active">
-            <a href="/items" >商品列表</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav nav navbar-right">
-        <li>
-          <% if(msg rescue nil)
-               href = ""
-               if("#{msg}" == "登录")
-                 href = "/login"
-               else
-                href = "/items"
-               end %>
-          <a href="<%= href %>" id="state"><%= "#{msg}"%></a>
-          <% end %>
-	      </li>
-        <li>
-          <a href="/login" onclick="return state();">注销</a>
-        </li>
-          <li>
-            <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
-          </li>
-          <li>
-            <a href="/admin/product_management">管理</a>
-          </li>
-        </ul>
-      </div>
-<% end %>
-    <div class="panel panel-success">
-      <div class="panel-heading text-center"><h4>商品列表</h4></div>
-      <table id="item-table" class="table table-bordered table-width-items">
-        <thead>
-          <tr>
-            <th>名称</th>
-            <th>单价(元)</th>
-            <th>单位</th>
-            <th>描述</th>
-            <th>优惠</th>
-            <th>购买</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        <tfoot>
-        </tfoot>
-      </table>
-    </div>
-
-<script type="text/javascript" src="../lib/jquery-2.1.1/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/js/bootstrap.js"></script>
-<script type="text/javascript" src="../lib/lodash-2.4.1/lodash.compat.js"></script>
+<div class="panel panel-success">
+	<div class="panel-heading text-center"><h4>商品列表</h4></div>
+	<table id="item-table" class="table table-bordered table-width-items">
+		<thead>
+			<tr>
+				<th>名称</th>
+				<th>单价(元)</th>
+				<th>单位</th>
+				<th>描述</th>
+				<th>优惠</th>
+				<th>购买</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+		</tfoot>
+	</table>
+</div>
+<% content_for :script_lis do %>
 <script type="text/javascript" src="../scripts/model/item.js"></script>
-<script type="text/javascript" src="../scripts/model/promotion.js"></script>
 <script type="text/javascript" src="../scripts/storage/cart_storage.js"></script>
+<script type="text/javascript" src="../scripts/model/cart.js"></script>
 <script type="text/javascript" src="../scripts/model/product_list.js"></script>
-<script type="text/javascript" src="../scripts/utils.js"></script>
+<% end %>

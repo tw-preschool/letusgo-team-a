@@ -1,57 +1,18 @@
 <% content_for :style_chunk do%>
-  <link rel="stylesheet" href="styles/main.css"/>
+<link rel="stylesheet" href="styles/main.css"/>
 <% end %>
-<!-- 导航栏 -->
-<% content_for :nav_lis do%>
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">切换导航</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/items" class="navbar-brand">Let's Go</a>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="active">
-          <a href="/">主页</a>
-        </li>
-        <li>
-          <a href="/items" >商品列表</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav nav navbar-right">
-        <li>
-          <% if(msg rescue nil)
-               href = ""
-               if("#{msg}" == "登录")
-                 href = "/login"
-               else
-                href = "/"
-               end %>
-          <a href="<%= href %>" id="state"><%= "#{msg}"%></a>
-          <% end %>
-        </li>
-        <li>
-          <a href="/login" onclick="return state();">注销</a>
-        </li>
-        <li>
-          <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
-        </li>
-        <li>
-          <a href="/admin/product_management">管理</a>
-        </li>
-      </ul>
-    </div>
-<% end %>
-<!-- 欢迎文字 -->
-    <div class="jumbotron">
-      <h1>Welcome to Let's Go!</h1>
-      <p>
-        商店里进行购物结算时会使用收银机（POS）系统，这台收银机会在结算时根据 客户的购物车（Cart）中的商品（Item）和商店正在进行的优惠活动（Promotion）进行结算和打印购物清单。
-        已知该商店正在对部分商品进行”买二赠一“的优惠活动。我们需要实现一个名为printInventory函数，该函数能够将指定格式的数据作为参数 输入，然后在浏览器的控制台中输出结算清单的文本。
-      </p>
-      <a class="btn btn-lg btn-danger" href="/items">Let's Go</a>
-    </div>
 
+<!-- 欢迎文字 -->
+<div class="jumbotron">
+	<h1>Welcome to Let's Go!</h1>
+	<p>
+	商店里进行购物结算时会使用收银机（POS）系统，这台收银机会在结算时根据 客户的购物车（Cart）中的商品（Item）和商店正在进行的优惠活动（Promotion）进行结算和打印购物清单。
+	已知该商店正在对部分商品进行”买二赠一“的优惠活动。我们需要实现一个名为printInventory函数，该函数能够将指定格式的数据作为参数 输入，然后在浏览器的控制台中输出结算清单的文本。
+	</p>
+	<a class="btn btn-lg btn-danger" href="/items">Let's Go</a>
+</div>
+<% content_for :script_lis do %>
+    <script type="text/javascript" src="../scripts/model/item.js"></script>
+    <script type="text/javascript" src="../scripts/storage/cart_storage.js"></script>
+    <script type="text/javascript" src="../scripts/model/cart.js"></script>
+<% end %>

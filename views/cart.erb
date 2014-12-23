@@ -1,74 +1,33 @@
 <% content_for :style_chunk do%>
-  <link rel="stylesheet" href="../styles/main.css"/>
-  <script>
-    function tip()
-    {
-      return confirm("are you sure?");
-    }
-  </script>
+<link rel="stylesheet" href="../styles/main.css"/>
 <% end %>
-<!-- 导航栏 -->
-<% content_for :nav_lis do%>
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">切换导航</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/items" class="navbar-brand">Let's Go</a>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="/">主页</a>
-        </li>
-        <li>
-          <a href="/items" >商品列表</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav nav navbar-right">
-        <li>
-          <% if(msg rescue nil) %>
-          <a href="/cart"><%= "#{msg}"%></a>
-          <% end %>
-        </li>
-        <li>
-          <a href="/login" onclick="return tip();">注销</a>
-        </li>
-        <li class="active">
-          <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
-        </li>
-        <li>
-          <a href="/admin/product_management">管理</a>
-        </li>
-      </ul>
-    </div>
+<div class="panel panel-warning">
+	<div class="panel-heading"><h4>购物清单</h4></div>
+	<div id="pay-date"></div>
+	<table class="table table-bordered table-responsive table-width-cart" id='item_list'>
+		<thead>
+			<tr>
+				<th>名称</th>
+				<th>单价(元)</th>
+				<th>单位</th>
+				<th>数量</th>
+				<th>小计</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+		<td colspan="5">
+			<ul class="list-unstyled">
+				<li class="text-right"><p><span>总计：</span><span id='totalPrice'>0.0</span><span>元</span></p></li>
+				<li class="text-right"><button id="pay_btn" class="btn btn-warning">付款</button></li>
+			</ul>
+		</td>
+		</tfoot>
+	</table>
+</div>
+<% content_for :script_lis do %>
+    <script type="text/javascript" src="../scripts/model/item.js"></script>
+    <script type="text/javascript" src="../scripts/storage/cart_storage.js"></script>
+    <script type="text/javascript" src="../scripts/model/cart.js"></script>
 <% end %>
-
-  <div class="panel panel-warning">
-    <div class="panel-heading"><h4>购物清单</h4></div>
-    <div id="pay-date"></div>
-    <table class="table table-bordered table-responsive table-width-cart" id='item_list'>
-      <thead>
-        <tr>
-          <th>名称</th>
-          <th>单价(元)</th>
-          <th>单位</th>
-          <th>数量</th>
-          <th>小计</th>
-        </tr>
-        </thead>
-        <tbody>
-      </tbody>
-      <tfoot>
-      <td colspan="5">
-          <ul class="list-unstyled">
-          <li class="text-right"><p><span>总计：</span><span id='totalPrice'>0.0</span><span>元</span></p></li>
-          <li class="text-right"><button id="pay_btn" class="btn btn-warning">付款</button></li>
-          </ul>
-        </td>
-      </tfoot>
-    </table>
-  </div>
-

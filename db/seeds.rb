@@ -1,9 +1,8 @@
 # encoding: utf-8
-require './models/product.rb'
-require './models/administrator.rb'
-require './models/user.rb'
 require 'json'
 require 'digest/sha1'
+
+Dir["./models/*.rb"].each {|file| require file }
 
 Product.delete_all
 

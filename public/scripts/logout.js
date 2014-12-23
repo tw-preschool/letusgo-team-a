@@ -1,8 +1,3 @@
-$( document ).ready( function () {
-	var count = sessionStorage.getItem( 'count' ) || 0;
-	$( '#count' ).text( count );
-} );
-
 function state() {
 	var a = $( "#state" ).text();
 	alert( a );

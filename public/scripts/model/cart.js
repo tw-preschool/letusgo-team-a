@@ -1,24 +1,33 @@
 $( document ).ready( function () {
-	cart = new ShoppingCart( cartStorage );
-	$( '#pay_btn' ).click( function () {
-		if ( cart.getCartCount() <= 0 ) {
-			alert( "请先选购商品吧!" );
-			window.location = '/items';
+	cartStorage = new CartStorage( function () {
+		cart = new ShoppingCart( cartStorage );
+		$( '#pay_btn' ).click( function () {
+			var pay_btn = $( this );
+			if ( cart.getCartCount() <= 0 ) {
+				alert( "请先选购商品吧!" );
+				window.location = '/items';
+				return false;
+			}
+			cart_data = cartStorage.getCartData();
+			cartStorage.clear( function () {
+				var postForm = document.createElement( "form" );
+				postForm.action = '/payment';
+				postForm.method = 'post';
+				postForm.enctype = 'multipart/form-data';
+				postForm.style.display = 'none';
+				var postText = document.createElement( "textarea" );
+				postText.name = "cart_data";
+				postText.value = JSON.stringify( cart_data );
+				postForm.appendChild( postText );
+				document.body.appendChild( postForm );
+				pay_btn.attr( 'disabled', true );
+				postForm.submit();
+			}, function () {
+				alert( "submit error! please try again!" );
+				pay_btn.attr( 'disabled', false );
+			} );
 			return false;
-		}
-		var postForm = document.createElement( "form" );
-		postForm.action = '/payment';
-		postForm.method = 'post';
-		postForm.enctype = 'multipart/form-data';
-		postForm.style.display = 'none';
-		var postText = document.createElement( "textarea" );
-		postText.name = "cart_data";
-		postText.value = window.sessionStorage.itemCount;
-		postForm.appendChild( postText );
-		document.body.appendChild( postForm );
-		postForm.submit();
-		window.sessionStorage.clear();
-		return false;
+		} );
 	} );
 } );
 
@@ -32,14 +41,7 @@ function ShoppingCart( cartStorage ) {
 
 	function renderProductsByitemList() {
 		$.each( itemList, function ( index, item ) {
-			var row = $( '<tr><td>' + item.name + '</td>' + '<td>' + item.price.toFixed( 2 ) + 
-				'</td>' + '<td>' + item.unit + '</td>' + 
-				'<td><form class="form-inline" role="form"><div class="input-group">' + 
-					'<span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>' + 
-					'<input data-id="' + item.id + '" class="form-control" type="text" value="' + item.count + '" placeholder="1">' + 
-					'<span class="input-group-btn"><button class="btn btn-primary" type="button">+</button></span>' + 
-				'</div></form></td>' + 
-				'<td><span class="real-price">' + item.realPrice() + '</span></td></tr>' );
+			var row = $( '<tr><td>' + item.name + '</td>' + '<td>' + item.price.toFixed( 2 ) + '</td>' + '<td>' + item.unit + '</td>' + '<td><form class="form-inline" role="form"><div class="input-group">' + '<span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>' + '<input data-id="' + item.id + '" class="form-control" type="text" value="' + item.count + '" placeholder="1">' + '<span class="input-group-btn"><button class="btn btn-primary" type="button">+</button></span>' + '</div></form></td>' + '<td><span class="real-price">' + item.realPrice() + '</span></td></tr>' );
 			if ( item.count == item.stock ) row.find( "button" ).last().attr( "disabled", true );
 			row.find( "button" ).first().click( function () {
 				var tr = $( this ).parents( "tr" ).first();
@@ -51,17 +53,19 @@ function ShoppingCart( cartStorage ) {
 					if ( confirm( "您真的要从购物车中移除 << " + item.name + " >> 吗？" ) ) {
 						$( this ).parents( "tr" ).first().remove();
 						item.count -= 1;
-						cartStorage.setItemWithCount( item.id, item.count );
-						showTotalPrice();
-						updateCartCount();
+						cartStorage.setItemWithCount( item.id, item.count, function () {
+							showTotalPrice();
+							updateCartCount();
+						} );
 					}
 				} else {
 					item.count -= 1;
-					cartStorage.setItemWithCount( item.id, item.count );
-					tr.find( "input" ).val( item.count );
-					tr.find( ".real-price" ).text( item.realPrice() );
-					showTotalPrice();
-					updateCartCount();
+					cartStorage.setItemWithCount( item.id, item.count, function () {
+						tr.find( "input" ).val( item.count );
+						tr.find( ".real-price" ).text( item.realPrice() );
+						showTotalPrice();
+						updateCartCount();
+					} );
 				}
 				if ( item.count < item.stock ) {
 					tr.find( "button" ).last().attr( "disabled", false );
@@ -75,11 +79,12 @@ function ShoppingCart( cartStorage ) {
 				} );
 				if ( item.count < item.stock ) {
 					item.count += 1;
-					cartStorage.setItemWithCount( item.id, item.count );
-					tr.find( "input" ).val( item.count );
-					tr.find( ".real-price" ).text( item.realPrice() );
-					showTotalPrice();
-					updateCartCount();
+					cartStorage.setItemWithCount( item.id, item.count, function () {
+						tr.find( "input" ).val( item.count );
+						tr.find( ".real-price" ).text( item.realPrice() );
+						showTotalPrice();
+						updateCartCount();
+					} );
 				}
 				if ( item.count == item.stock ) {
 					$( this ).attr( "disabled", true );
@@ -101,13 +106,15 @@ function ShoppingCart( cartStorage ) {
 			},
 			success: function ( data ) {
 				$.each( data, function ( index, item ) {
-					var count = itemCountList[ item.id ];
-					if ( count > 0 && item.stock > 0) {
-						if ( parseInt( count ) <= parseInt( item.stock ) ) {
-							itemList.push( new Item( item, count ) );
-						} else {
-							itemList.push( new Item( item, item.stock ) );
-							cartStorage.setItemWithCount( item.id, item.stock );
+					if ( item != null ) {
+						var count = itemCountList[ item.id ];
+						if ( count > 0 && item.stock > 0 ) {
+							if ( parseInt( count ) <= parseInt( item.stock ) ) {
+								itemList.push( new Item( item, count ) );
+							} else {
+								itemList.push( new Item( item, item.stock ) );
+								cartStorage.setItemWithCount( item.id, item.stock );
+							}
 						}
 					}
 				} );
@@ -129,23 +136,21 @@ function ShoppingCart( cartStorage ) {
 
 	function initial( cartStorage ) {
 		var itemIdList = [];
-		$.each( cartStorage.getAllItemCounts(), function ( index, item ) {
+		$.each( cartStorage.getCartData(), function ( index, item ) {
 			itemIdList.push( index );
 		} );
-		getProductsByIdList( itemIdList, cartStorage.getAllItemCounts() );
+		getProductsByIdList( itemIdList, cartStorage.getCartData() );
 	}
 
 	function updateCartCount() {
 		cartCount = 0;
-		$.each( cartStorage.getAllItemCounts(), function ( id, count ) {
-			var item = _.find( itemList, function ( item ) {return item.id == id;} );
-			if(item != null)
-				cartCount += item.count;
-			else
-				cartStorage.setItemWithCount(id, 0);
+		$.each( cartStorage.getCartData(), function ( id, count ) {
+			var item = _.find( itemList, function ( item ) {
+				return item.id == id;
+			} );
+			if ( item != null ) cartCount += item.count;
+			else cartStorage.setItemWithCount( id, 0 );
 		} );
-
 		$( '#count' ).text( cartCount );
-		sessionStorage.count = cartCount;
 	}
 }
