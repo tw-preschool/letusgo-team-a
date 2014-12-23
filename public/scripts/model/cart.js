@@ -32,13 +32,13 @@ function ShoppingCart( cartStorage ) {
 
 	function renderProductsByitemList() {
 		$.each( itemList, function ( index, item ) {
-			var row = $( '<tr><td>' + item.name + '</td>' + '<td>' + item.price.toFixed( 2 ) + 
-				'</td>' + '<td>' + item.unit + '</td>' + 
-				'<td><form class="form-inline" role="form"><div class="input-group">' + 
-					'<span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>' + 
-					'<input data-id="' + item.id + '" class="form-control" type="text" value="' + item.count + '" placeholder="1">' + 
-					'<span class="input-group-btn"><button class="btn btn-primary" type="button">+</button></span>' + 
-				'</div></form></td>' + 
+			var row = $( '<tr><td>' + item.name + '</td>' + '<td>' + item.price.toFixed( 2 ) +
+				'</td>' + '<td>' + item.unit + '</td>' +
+				'<td><form class="form-inline" role="form"><div class="input-group">' +
+					'<span class="input-group-btn"><button class="btn btn-primary" type="button">-</button></span>' +
+					'<input data-id="' + item.id + '" class="form-control" type="text" value="' + item.count + '" placeholder="1">' +
+					'<span class="input-group-btn"><button class="btn btn-primary" type="button">+</button></span>' +
+				'</div></form></td>' +
 				'<td><span class="real-price">' + item.realPrice() + '</span></td></tr>' );
 			if ( item.count == item.stock ) row.find( "button" ).last().attr( "disabled", true );
 			row.find( "button" ).first().click( function () {

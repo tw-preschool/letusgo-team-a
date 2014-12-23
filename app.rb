@@ -123,6 +123,11 @@ class POSApplication < Sinatra::Base
 		end
 	end
 
+	get '/payment' do
+		content_type :html
+		erb :payment
+	end
+
 	post '/edit/:id' do
 		product = (Product.where("id = ? AND is_deleted = ?", params[:id], false).first rescue nil )
 		product.attributes ={

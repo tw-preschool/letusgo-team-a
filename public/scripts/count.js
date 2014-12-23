@@ -5,7 +5,6 @@ $( document ).ready( function () {
 
 function state() {
 	var a = $( "#state" ).text();
-	alert( a );
 	if ( a == "登录" ) {
 		return true;
 	} else {
