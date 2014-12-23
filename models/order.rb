@@ -1,13 +1,10 @@
-require 'active_record'
-require 'json'
-require_relative './product'
-
 class Order < ActiveRecord::Base
 	has_many :products, class_name: "OrderProduct", dependent: :destroy
 	has_many :promotion_products, class_name: "OrderPromotionProduct", dependent: :destroy
 	validates :order_id, uniqueness: true
 	before_create :set_order_id
 	after_initialize :init
+	after_save :update_stock
 
 	attr_reader :product_list, :discount_list
 
@@ -73,6 +70,13 @@ class Order < ActiveRecord::Base
 		super
 	end
 
+	def update_stock
+		@product_list.each do |product|
+			product.stock -= product.amount
+			product.save
+		end
+	end
+
 	def set_order_id
 		date_str = Time.now.strftime "%Y%m%d"
 		loop do
@@ -81,6 +85,7 @@ class Order < ActiveRecord::Base
 			break unless Order.find_by_order_id(self.order_id)
 		end
 	end
+
 end
 
 class <<Order

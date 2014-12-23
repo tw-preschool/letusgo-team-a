@@ -1,55 +1,26 @@
 <% content_for :style_chunk do%>
-  <link rel="stylesheet" href="styles/main.css"/>
-  <link rel="stylesheet" href="styles/login.css"/>
-  <link rel="stylesheet" href="styles/entry.css"/>
-  <script type="text/javascript">
-    function login()
-    {
-      document.getElementById("pwdHidden").value = hex_sha1(document.getElementById("pwd").value);
-      return true;
-    }
-  </script>
-<% end %>
-<% content_for :nav_lis do%>
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">切换导航</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/items" class="navbar-brand">Let's Go</a>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="/">主页</a>
-        </li>
-        <li>
-          <a href="/items" >商品列表</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav nav navbar-right">
-        <li class="active">
-          <a href="/login">登录</a>
-	      </li>
-        <li>
-          <a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
-        </li>
-        <li>
-          <a href="/admin/product_management">管理</a>
-        </li>
-      </ul>
-    </div>
+<link rel="stylesheet" href="styles/main.css"/>
+<link rel="stylesheet" href="styles/login.css"/>
+<link rel="stylesheet" href="styles/entry.css"/>
+<script type="text/javascript">
+	function login()
+	{
+		document.getElementById("pwdHidden").value = hex_sha1(document.getElementById("pwd").value);
+		return true;
+	}
+</script>
 <% end %>
 <!-- 欢迎文字 -->
-    <section id="entry">
-      <form action="/login" class="form-signin" method="post" role="form" onsubmit="login();">
-        <h3 class="form-signin-heading">请登入...</h3>
-        <input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.." autofocus/>
-    	  <input id="pwdHidden" type="hidden" name="pwd" value="" />
-    	  <input id="pwd" type="password" class="form-control" required placeholder="请输入密码.."/>
-        <a href="/register" class="btn btn-sm btn-danger" id="signUp">注册</a>
-        <button type="submit" class="logOn btn btn-lg btn-primary btn-block">提交</button>
-      </form>
-    </section>
+<section id="entry">
+	<form action="/login" class="form-signin" method="post" role="form" onsubmit="login();">
+		<h3 class="form-signin-heading">请登入...</h3>
+		<input type="text" class="form-control" name="user" id="user" placeholder="请输入邮箱.." autofocus/>
+		<input id="pwdHidden" type="hidden" name="pwd" value="" />
+		<input id="pwd" type="password" class="form-control" required placeholder="请输入密码.."/>
+		<a href="/register" class="btn btn-sm btn-danger" id="signUp">注册</a>
+		<button type="submit" class="logOn btn btn-lg btn-primary btn-block">提交</button>
+	</form>
+</section>
+<% content_for :script_lis do %>
+    <script type="text/javascript" src="../scripts/entry.js"></script>
+<% end %>

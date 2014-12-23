@@ -1,5 +1,8 @@
-# require 'rake'
-# require 'rspec/core/rake_task'
+# encoding: UTF-8
+
+require 'rake'
+require 'rspec/core/rake_task'
+require 'active_support'
 require 'active_support/core_ext'
 require 'active_record'
 require 'logger'

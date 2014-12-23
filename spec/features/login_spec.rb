@@ -10,7 +10,7 @@ feature 'Pos Login Page' do
 
     scenario 'should see admin login page when an unauthorized visitor click admin link in navigator' do
         visit '/'
-        click_on '管理'
+        click_on '登录'
         expect(page).to have_content('请登入...')
     end
 
@@ -34,7 +34,7 @@ feature 'Pos Login Page' do
         admin = Administrator.where("name = ?", "admin").first #rescue nil
         page.set_rack_session admin_id: admin.id
         visit '/'
-        click_on '管理'
+        click_on '商品管理'
         expect(current_url).to end_with('/admin/product_management')
     end
 end
