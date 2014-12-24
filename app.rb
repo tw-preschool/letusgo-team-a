@@ -121,6 +121,21 @@ class POSApplication < Sinatra::Base
 		end
 	end
 
+	get '/my_orders' do
+		if (user = get_session :user)
+			content_type :html
+			if(params["id"])
+				order = user.orders.find_by(order_id: params["id"].to_s)
+				erb :'order_detail', locals:{order: order, user: user}
+			else
+				erb :'order_list', locals:{orders: user.orders.order("created_at DESC"), user: user}
+			end
+		else
+			flash.next[:warning] = '请登录后继续操作...'
+			redirect to('/login'), 303
+		end
+	end
+
 	get '/cart/cart_data' do
 		content_type :json
 		if user = get_session(:user)
@@ -184,8 +199,7 @@ class POSApplication < Sinatra::Base
 			else
 				orders = Order.order("created_at DESC") rescue ActiveRecord::RecordNotFound
 				erb :'admin/order_management', locals:{orders: orders, admin: admin}
-			end
-		else
+			end		else
 			session[:user_id] = nil
 			flash.next[:warning] = '请登录后台并继续操作...'
 			redirect to('/login'), 303
@@ -194,20 +208,19 @@ class POSApplication < Sinatra::Base
 
 	post '/payment' do
 		if user = get_session(:user)
-			begin
+			# begin
 				cart_data = JSON.parse params[:cart_data]
 				order = Order.new
 				order.init_with_data cart_data
 				order.update_price
-				order.save
+				# order.save
+				user.orders << order
 				content_type :html
 				erb :payment, locals:{order: order, user: user}
-				# puts Order.last.products.to_json
-			rescue
-				puts e.to_json
-				flash.next[:error] = '抱歉，购买出错了！请重新购买！'
-				redirect '/cart'
-			end
+			# rescue
+			# 	flash.next[:error] = '抱歉，购买出错了！请重新购买！'
+			# 	redirect '/cart'
+			# end
 		end
 	end
 

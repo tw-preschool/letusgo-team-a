@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
 	has_one :shopping_cart, class_name: "ShoppingCart", foreign_key: "user_id", dependent: :destroy
+	has_many :orders, class_name: "Order", foreign_key: "user_id", dependent: :destroy
 
 	validates :email, :name, :password, :address, :phone, presence: true
 	validates :email, uniqueness: true

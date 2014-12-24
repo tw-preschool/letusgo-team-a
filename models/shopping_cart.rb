@@ -1,7 +1,7 @@
 class ShoppingCart < ActiveRecord::Base
 	has_many :cart_products, class_name: "CartProductAssociation", foreign_key: "cart_id", dependent: :destroy
 	# has_many :products, through: :cart_products, source: :product
-	belongs_to :user,class_name: "User"
+	belongs_to :user, class_name: "User", foreign_key: "user_id"
 
 	# attr_reader :products
 	validates :user_id, presence: true

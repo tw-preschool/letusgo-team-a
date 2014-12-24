@@ -1,39 +1,10 @@
 <% content_for :style_chunk do%>
 <link rel="stylesheet" href="../styles/main.css"/>
 <% end %>
-<% content_for :nav_lis do%>
-<div class="navbar-header">
-	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-	<span class="sr-only">切换导航</span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	</button>
-	<a href="/items" class="navbar-brand">Let's Go</a>
-</div>
-<div class="navbar-collapse collapse">
-	<ul class="nav navbar-nav">
-		<li>
-			<a href="/">主页</a>
-		</li>
-		<li>
-			<a href="/items">商品列表</a>
-		</li>
-		<li class="active"><a href="/admin/order_management">订单管理</a></li>
-	</ul>
-	<ul class="navbar-nav nav navbar-right">
-		<li>
-			<a href="/cart" ><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="count">0</span>)</a>
-		</li>
-		<li>
-			<a href="/admin/product_management">管理</a>
-		</li>
-	</ul>
-</div>
-<% end %>
 <!-- 页面主体 -->
-<div class="order-id"><%= "订单编号 : ##{order.order_id}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
-<div class="order-time"><%= "订单时间 : #{order.created_at.in_time_zone(8).strftime('%Y-%m-%d %H:%M:%S')}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
+<div class="order-id"><%= "订单编号：##{order.order_id}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
+<div class="order-user"><%= "用户账户：#{(order.user.email rescue "")}" %></div>
+<div class="order-time"><%= "订单时间：#{order.created_at.in_time_zone(8).strftime('%Y-%m-%d %H:%M:%S')}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="panel panel-success">
 	<div class="panel-heading"><h4>购物清单</h4></div>
 	<div id="pay-date"></div>

@@ -10,7 +10,6 @@
 		<thead>
 			<tr>
 				<th>订单编号</th>
-				<th>用户账户</th>
 				<th>订单时间</th>
 				<th>订单金额</th>
 				<th>操作</th>
@@ -23,16 +22,13 @@
 					<%= "##{order.order_id}" %>
 				</td>
 				<td>
-					<%= ("#{order.user.email}" rescue "") %>
-				</td>
-				<td>
 					<%= "#{order.created_at.in_time_zone(8).strftime('%Y-%m-%d %H:%M:%S')}" %>
 				</td>
 				<td>
 					<%= "#{order.sum_price}" %>
 				</td>
 				<td>
-					<a <%= "href=\'/admin/order_management?id=#{order.order_id}\'"%>>订单详情</a>
+					<a <%= "href=\'/my_orders?id=#{order.order_id}\'"%>>订单详情</a>
 				</td>
 			</tr>
 			<% end %>
@@ -42,8 +38,10 @@
 	</table>
 </div>
 <% else %>
-<div><h3>抱歉，暂时没有订单！</h3></div>
+<div><h3>您还没有购买任何商品哦！</h3></div>
 <% end %>
 <% content_for :script_lis do %>
-
+<script type="text/javascript" src="../scripts/model/item.js"></script>
+<script type="text/javascript" src="../scripts/storage/cart_storage.js"></script>
+<script type="text/javascript" src="../scripts/model/cart.js"></script>
 <% end %>

@@ -27,7 +27,8 @@ body
     width: 15%;
 }
 .order-id,
-.order-time
+.order-time,
+.order-user
 {
     font-size: 105%;
     font-weight: bold;
@@ -48,10 +49,12 @@ body
 .order-back
 {
     margin-bottom: 20px;
+
     text-align: right;
 }
-.content-body {
-	margin-top: 100px;
+.content-body
+{
+    margin-top: 100px;
 }
 .message-bar
 {

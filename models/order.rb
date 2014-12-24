@@ -1,9 +1,11 @@
 class Order < ActiveRecord::Base
 	has_many :products, class_name: "OrderProduct", dependent: :destroy
 	has_many :promotion_products, class_name: "OrderPromotionProduct", dependent: :destroy
+	belongs_to :user, class_name: "User", foreign_key: "user_id"
 	validates :order_id, uniqueness: true
 	before_create :set_order_id
 	after_initialize :init
+	before_save :update_products
 	after_save :update_stock
 
 	attr_reader :product_list, :discount_list
@@ -53,7 +55,7 @@ class Order < ActiveRecord::Base
 		self.sum_price
 	end
 
-	def save
+	def update_products
 		@product_list.each do |product|
 			self.products << OrderProduct.new( name: product.name,
 				kindred_price: product.kindred_price,
@@ -67,7 +69,6 @@ class Order < ActiveRecord::Base
 				discount_amount: product.discount_amount,
 				discount_price: product.discount_amount * product.price )
 		end
-		super
 	end
 
 	def update_stock

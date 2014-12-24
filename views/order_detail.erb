@@ -2,8 +2,8 @@
 <link rel="stylesheet" href="../styles/main.css"/>
 <% end %>
 <!-- 页面主体 -->
-<div class="order-id"><%= "订单编号 : ##{order.order_id}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
-<div class="order-time"><%= "订单时间 : #{order.created_at}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
+<div class="order-id"><%= "订单编号：##{order.order_id}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
+<div class="order-time"><%= "订单时间：#{order.created_at.in_time_zone(8).strftime('%Y-%m-%d %H:%M:%S')}".gsub(/\s/, "&nbsp;&nbsp;")%></div>
 <div class="panel panel-success">
 	<div class="panel-heading"><h4>购物清单</h4></div>
 	<div id="pay-date"></div>
@@ -54,17 +54,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% order.promotion_products.each do |promotion_product| %>
-			<% if promotion_product.discount_amount > 0 %>
+			<% order.promotion_products.each do |product| %>
+			<% if product.discount_amount > 0 %>
 			<tr>
 				<td>
 					买二送一
 				</td>
 				<td>
-					<%= "#{promotion_product.name}" %>
+					<%= "#{product.name}" %>
 				</td>
 				<td>
-					<%= "#{promotion_product.discount_amount}" %>
+					<%= "#{product.discount_amount}" %>
 				</td>
 			</tr>
 			<% end %>
@@ -78,12 +78,12 @@
 			<ul class="list-unstyled order-sum-row">
 				<li class="text-right"><p><%= "订单金额：#{format("%10.2f", order.sum_price)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
 				<li class="text-right"><p><%= "折扣金额：#{format("%10.2f", order.sum_discount)} 元".gsub(/\s/, "&nbsp;&nbsp;") %></p></li>
-				<li class="text-right"><a href="/items" class="btn btn-success">确认</a></li>
 			</ul>
 		</td>
 		</tfoot>
 	</table>
 </div>
+<div class="order-back"><a href="/my_orders" class="btn btn-success">返回</a></div>
 <% content_for :script_lis do %>
 <script type="text/javascript" src="../scripts/model/item.js"></script>
 <script type="text/javascript" src="../scripts/storage/cart_storage.js"></script>
