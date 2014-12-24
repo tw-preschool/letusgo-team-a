@@ -6,9 +6,12 @@ require 'sinatra/reloader'
 require 'rack/contrib'
 require 'sinatra/flash'
 require 'active_record'
+require 'action_mailer'
 require 'json'
 
 Dir["./models/*.rb"].each {|file| require file }
+
+require_relative 'mailer'
 
 class POSApplication < Sinatra::Base
 	configure do
@@ -208,7 +211,7 @@ class POSApplication < Sinatra::Base
 
 	post '/payment' do
 		if user = get_session(:user)
-			# begin
+			begin
 				cart_data = JSON.parse params[:cart_data]
 				order = Order.new
 				order.init_with_data cart_data
@@ -217,10 +220,10 @@ class POSApplication < Sinatra::Base
 				user.orders << order
 				content_type :html
 				erb :payment, locals:{order: order, user: user}
-			# rescue
-			# 	flash.next[:error] = '抱歉，购买出错了！请重新购买！'
-			# 	redirect '/cart'
-			# end
+			rescue
+				flash.next[:error] = '抱歉，购买出错了！请重新购买！'
+				redirect '/cart'
+			end
 		end
 	end
 
@@ -273,16 +276,16 @@ class POSApplication < Sinatra::Base
 		session[:admin_id] = nil
 		oldUser = User.where("email = ?", params[:newUser]).first #rescue nil
 		if oldUser.nil?
-			 user = User.create(:email => params[:newUser],
+			user = User.create(:email => params[:newUser],
 				:password => params[:newPwd],
 				:name => params[:newName],
 				:address => params[:addr],
 				:phone => params[:phone])
-
-			 user.save
-			 content_type :html
+			user.save
+			content_type :html
  			flash.next[:success] = '注册成功!'
-			redirect to('/'), 303
+ 			Mailer.contact(user).deliver_now rescue nil
+ 			redirect '/'
 		else
 			content_type :html
 			flash.next[:warning] = '用户名已被抢注过啦!'

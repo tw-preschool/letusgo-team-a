@@ -7,6 +7,7 @@ gem 'activerecord'
 gem 'rack-contrib'
 gem 'thin'
 gem 'sinatra-flash'
+gem 'actionmailer'
 
 group :development, :test do
 	gem 'rack-test'

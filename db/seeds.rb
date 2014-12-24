@@ -27,3 +27,4 @@ puts Administrator.create(:name => 'admin', :password => Digest::SHA1.hexdigest(
 User.delete_all
 
 puts User.create(:email => '123456@qq.com', :password => Digest::SHA1.hexdigest('123456'), :name => 'cxl', :address => 'xian', :phone => '18392035693').to_json
+puts User.create(:email => '298052357@qq.com', :password => Digest::SHA1.hexdigest('123456'), :name => 'SanCoder', :address => 'xian', :phone => '18392035693').to_json
