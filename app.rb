@@ -110,7 +110,8 @@ class POSApplication < Sinatra::Base
 		if (user = get_session :user)
 		  erb :items, locals:{user: user}
 		else
-		  erb :items
+		  admin = get_session(:admin)
+		  erb :items, locals:{admin: admin}
 		end
 	end
 
@@ -127,11 +128,16 @@ class POSApplication < Sinatra::Base
 	get '/my_orders' do
 		if (user = get_session :user)
 			content_type :html
+			begin
 			if(params["id"])
-				order = user.orders.find_by(order_id: params["id"].to_s)
+			  order = user.orders.find_by(order_id: params["id"].to_s)
 				erb :'order_detail', locals:{order: order, user: user}
 			else
 				erb :'order_list', locals:{orders: user.orders.order("created_at DESC"), user: user}
+			end
+			rescue
+				flash.next[:warning] = '无此订单~'
+		    redirect to('/my_orders'), 303
 			end
 		else
 			flash.next[:warning] = '请登录后继续操作...'
