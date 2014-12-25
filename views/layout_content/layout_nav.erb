@@ -5,7 +5,11 @@
 	<span class="icon-bar"></span>
 	<span class="icon-bar"></span>
 	</button>
+	<% if (admin rescue nil) %>
+	<a href="/admin/product_management" class="navbar-brand">Let's Go</a>
+	<% else %>
 	<a href="/items" class="navbar-brand">Let's Go</a>
+	<% end %>
 </div>
 <div class="navbar-collapse collapse">
 	<ul class="nav navbar-nav">
