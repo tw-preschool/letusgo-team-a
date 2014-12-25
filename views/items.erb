@@ -16,6 +16,23 @@
 			</tr>
 		</thead>
 		<tbody>
+			<% products.each do |product| %>
+			<tr id="row_<%= product.id %>" data-stock="<%= product.stock %>">
+				<td><%= "#{product.name}" %></td>
+				<td><%= "#{format("%8.2f",product.price)}" %></td>
+				<td><%= "#{product.unit}" %></td>
+				<td title="<%= product.detail %>" class="nowarp"><%= product.detail %></td>
+				<td><%= (product.promotion ? "买二赠一" : "无优惠") %></td>
+				<td>
+				<% cart_product = user.shopping_cart.cart_products.find_by_product_id(product.id) rescue nil %>
+					<% if(user rescue nil) && (!cart_product || cart_product.amount < product.stock) %>
+					<button class='btn btn-sm btn-success addCart' onclick='add_product_to_cart(<%= product.id %>)'>加入购物车</button>
+					<% else %>
+					<button class='btn btn-sm btn-success addCart' disabled='true'>加入购物车</button>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
 		</tbody>
 		<tfoot>
 		</tfoot>
@@ -25,5 +42,25 @@
 <script type="text/javascript" src="../scripts/model/item.js"></script>
 <script type="text/javascript" src="../scripts/storage/cart_storage.js"></script>
 <script type="text/javascript" src="../scripts/model/cart.js"></script>
-<script type="text/javascript" src="../scripts/model/product_list.js"></script>
+<!-- <script type="text/javascript" src="../scripts/model/product_list.js"></script> -->
+<script type="text/javascript">
+function add_product_to_cart (product_id) {
+	var row = $("#item-table #row_"  +product_id);
+	var stock = parseInt(row.data("stock"));
+	var add_button = row.find(".addCart");
+	var product_count = cartStorage.getItemCount( parseInt(product_id) );
+	if ( product_count < stock ) {
+		add_button.attr( 'disabled', true );
+		cartStorage.setItemCount( ( product_id ).toString(), function () {
+			$( '#count' ).text( cartStorage.getSumCount() );
+			if ( cartStorage.getItemCount( ( product_id ).toString() ) >= stock )
+				add_button.attr( 'disabled', true );
+			else
+				add_button.attr( 'disabled', false );
+		}, function() {
+			add_button.attr( 'disabled', false );
+		} );
+	}
+}
+</script>
 <% end %>

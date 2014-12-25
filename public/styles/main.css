@@ -71,3 +71,9 @@ body
 {
     font-size: 120%;
 }
+.item-table td.nowarp {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width:0px;
+}

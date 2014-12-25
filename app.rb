@@ -107,10 +107,11 @@ class POSApplication < Sinatra::Base
 
 	get '/items' do
 		content_type :html
+		products = Product.get_all.where("stock > 0")
 		if (user = get_session :user)
-			erb :items, locals:{user: user}
+			erb :items, locals:{products: products, user: user}
 		else
-			erb :items
+			erb :items, locals:{products: products}
 		end
 	end
 
